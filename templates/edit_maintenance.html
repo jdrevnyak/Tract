@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Maintenance Task</title>
+</head>
+<body>
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="squeeze">
+    <h1>Edit Maintenance Task</h1>
+    <form method="POST">
+        <label for="description">Description:</label>
+        <input type="text" id="description" name="description" value="{{ task.description }}">
+        <label for="frequency">Frequency:</label>
+        <select id="frequency" name="frequency">
+            <option value="none" {% if task.frequency == 'none' %}selected{% endif %}>None</option>
+            <option value="daily" {% if task.frequency == 'daily' %}selected{% endif %}>Daily</option>
+            <option value="weekly" {% if task.frequency == 'weekly' %}selected{% endif %}>Weekly</option>
+            <option value="biweekly" {% if task.frequency == 'biweekly' %}selected{% endif %}>Biweekly</option>
+            <option value="monthly" {% if task.frequency == 'monthly' %}selected{% endif %}>Monthly</option>
+        </select>
+        <input type="submit" value="Save Changes">
+    </form>
+    </div>
+{% endblock %}
+</body>
+</html>

@@ -1,0 +1,77 @@
+from flask import render_template, request, redirect, url_for
+from app import app, db
+from models import Equipment, MaintenanceTask, Manual
+from datetime import datetime, timedelta
+from barcode import EAN13
+from barcode.writer import ImageWriter
+
+# Use the 'app' object from 'app.py' for your routes
+@app.route('/')
+def home():
+    # Get all maintenance tasks that are due in the next week
+    # upcoming_tasks = MaintenanceTask.query.filter(MaintenanceTask.next_date <= datetime.now() + timedelta(weeks=1)).all()
+    upcoming_tasks = []
+    return render_template('home.html', tasks=upcoming_tasks)
+
+
+@app.route('/equipment')
+def list_equipment():
+    equipment = Equipment.query.all()
+    return render_template('list_equipment.html', equipment=equipment)
+
+@app.route('/equipment/new', methods=['GET', 'POST'])
+def new_equipment():
+    if request.method == 'POST':
+        equipment = Equipment(name=request.form['name'])
+        db.session.add(equipment)
+        db.session.flush()  # This is needed to generate an ID for the new equipment
+        equipment.barcode = str(equipment.id).zfill(12)  # Pad the ID with zeros to make it 12 digits long
+        barcode = EAN13(equipment.barcode, writer=ImageWriter())  # Create a new EAN13 barcode
+        barcode.save(f'static/barcodes/{equipment.id}')  # Save the barcode as an image
+        db.session.commit()
+        return redirect(url_for('list_equipment'))
+    return render_template('new_equipment.html')
+
+@app.route('/equipment/<int:id>/edit', methods=['GET', 'POST'])
+def edit_equipment(id):
+    equipment = Equipment.query.get(id)
+    if request.method == 'POST':
+        equipment.name = request.form['name']
+        barcode = EAN13(equipment.barcode, writer=ImageWriter())  # Create a new EAN13 barcode
+        barcode.save(f'static/barcodes/{equipment.id}')  # Save the barcode as an image
+        db.session.commit()
+        return redirect(url_for('list_equipment'))
+    return render_template('edit_equipment.html', equipment=equipment)
+
+@app.route('/equipment/<int:id>')
+def view_equipment(id):
+    equipment = Equipment.query.get(id)
+    return render_template('view_equipment.html', equipment=equipment)
+
+@app.route('/equipment/<int:id>/maintenance/new', methods=['GET', 'POST'])
+def new_maintenance(id):
+    equipment = Equipment.query.get(id)
+    if request.method == 'POST':
+        task = MaintenanceTask(equipment_id=id, description=request.form['description'], next_date=request.form['next_date'])
+        db.session.add(task)
+        db.session.commit()
+        return redirect(url_for('view_equipment', id=id))
+    return render_template('new_maintenance.html', equipment=equipment)
+
+@app.route('/maintenance/<int:id>/edit', methods=['GET', 'POST'])
+def edit_maintenance(id):
+    task = MaintenanceTask.query.get(id)
+    if request.method == 'POST':
+        task.description = request.form['description']
+        task.next_date = request.form['next_date']
+        db.session.commit()
+        return redirect(url_for('view_equipment', id=task.equipment_id))
+    return render_template('edit_maintenance.html', task=task)
+
+@app.route('/maintenance/<int:id>/delete', methods=['POST'])
+def delete_maintenance(id):
+    task = MaintenanceTask.query.get(id)
+    equipment_id = task.equipment_id
+    db.session.delete(task)
+    db.session.commit()
+    return redirect(url_for('view_equipment', id=equipment_id))

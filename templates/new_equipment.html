@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add New Equipment</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    {% extends 'base.html' %}
+    {% block content %}
+    <div class="squeeze">
+    <h1>Add New Equipment</h1>
+    <div class="form-container">
+        <form method="POST">
+            <div class="form-field">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name">
+            </div>
+            <div class="form-field">
+                <label for="barcode">Barcode:</label>
+                <input type="text" id="barcode" name="barcode">
+            </div>
+            <div class="form-field">
+                <input type="submit" value="Add Equipment" class="submit-button">
+            </div>
+        </form>
+    </div>
+</div>
+    {% endblock %}
+</body>
+</html>

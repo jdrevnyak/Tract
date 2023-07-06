@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Equipment</title>
+</head>
+<body>
+    {% extends 'base.html' %}
+
+    {% block content %}
+    <div class="squeeze">
+        <h1>Edit Equipment</h1>
+        <form method="POST">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" value="{{ equipment.name }}">
+            <label for="barcode">Barcode:</label>
+            <input type="text" id="barcode" name="barcode" value="{{ equipment.barcode }}">
+            <input type="submit" value="Save Changes">
+        </form>
+        </div>
+    {% endblock %}
+    
+</body>
+</html>

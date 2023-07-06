@@ -1,0 +1,181 @@
+/* styles.css */
+
+/* Global styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh; /* Added */
+  display: flex; /* Added */
+  flex-direction: column; /* Added */
+}
+
+.container {
+  flex: 1; /* Added */
+  display: flex;
+}
+
+.sidebar {
+  width: 250px;
+  background-color: #0073aa;
+  padding: 20px;
+  color: #fff;
+  flex-shrink: 0; /* Added */
+
+}
+
+.logo {
+  flex: 0 0 auto;
+  margin-right: 10x; /* Adjust this value to add spacing between the logo and sidebar */
+  width: auto;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+
+.sidebar a {
+  display: block;
+  margin-bottom: 15px;
+  color: #fff;
+  text-decoration: none;
+}
+
+.sidebar a:hover {
+  color: #eee;
+}
+
+.content {
+  flex: 1;
+  padding: 20px;
+  background-color: #f1f1f1;
+}
+  
+  /* Page-specific styles */
+  /* Add any page-specific styles here */
+
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table th,
+table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ccc;
+}
+
+table th {
+  background-color: #f1f1f1;
+}
+
+.table-container {
+  margin-top: 20px;
+  position: relative;
+}
+
+.squeeze{
+  margin: 30px;
+}
+
+.add-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 10px;
+  padding: 10px 20px;
+  background-color: #2ecc71;
+  color: #fff;
+  text-decoration: none;
+}
+
+.add-button:hover {
+  background-color: #27ae60;
+}
+
+.form-container {
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #f1f1f1;
+}
+
+.form-field {
+  margin-bottom: 10px;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 5px;
+}
+
+.submit-button {
+  padding: 10px 20px;
+  background-color: #2ecc71;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+.submit-button:hover {
+  background-color: #27ae60;
+}
+
+h1 {
+  color: #333;
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+p {
+  color: #666;
+  margin-bottom: 10px;
+}
+
+img {
+  max-width: 200px;
+  margin-bottom: 20px;
+}
+
+ul {
+  list-style-type: none;
+  margin-bottom: 20px;
+  padding: 0;
+}
+
+li {
+  margin-bottom: 10px;
+}
+
+.btn {
+  display: inline-block;
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 4px;
+}
+
+.btn-edit {
+  background-color: #ffc107;
+  margin-right: 10px;
+}
+
+.btn-delete {
+  background-color: #dc3545;
+}
+
+.add-button {
+  display: flex;
+  margin: 30px;
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 4px;
+}

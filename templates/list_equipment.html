@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Equipment List</title>
+</head>
+<body>
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="squeeze">
+  <h1>List of Equipment</h1>
+
+  <div class="table-container">
+    {% if equipment %}
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>ID</th>
+            <th>Barcode</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for equip in equipment %}
+            <tr>
+              <td><a href="{{ url_for('view_equipment', id=equip.id) }}">{{ equip.name }}</a></td>
+              <td>{{ equip.id }}</td>
+              <td>{{ equip.barcode }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p>No equipment added</p>
+    {% endif %}
+  </div>
+
+  <a href="{{ url_for('new_equipment') }}" class="add-button">Add Equipment</a>
+</div>
+{% endblock %}
+
+</body>
+</html>
