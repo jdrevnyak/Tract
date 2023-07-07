@@ -6,3 +6,9 @@ python-dateutil
 Flask-Migrate
 flask-wtf
 bcrypt
+werkzeug
+datetime
+flask_login
+flask_security_too
+flask_bcrypt
+wtforms
