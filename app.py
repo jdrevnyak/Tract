@@ -18,18 +18,22 @@ import secrets
 
 
 def create_app():
+    # Create the Flask app
     app = Flask(__name__)
-    # Generate a nice key using secrets.token_urlsafe()
+
+    # Set up your Flask app's secret key and salt
     app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY", 'pf9Wkove4IKEAXvy-cQkeDPhv9Cb3Ag-wyJILbq_dFw')
-    # Bcrypt is set as default SECURITY_PASSWORD_HASH, which requires a salt
-    # Generate a good salt using: secrets.SystemRandom().getrandbits(128)
     salt = secrets.SystemRandom().getrandbits(128)
     app.config['SECURITY_PASSWORD_SALT'] = os.environ.get("SECURITY_PASSWORD_SALT", salt.to_bytes(16, 'big'))
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+
+    # Configure the database
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///instance/tract.db')
+
+    # Initialize SQLAlchemy
+    db = SQLAlchemy(app)
 
 
     # Initialize extensions inside create_app()
-    db = SQLAlchemy(app)
     bcrypt = Bcrypt(app)
     migrate = Migrate(app, db)
 
