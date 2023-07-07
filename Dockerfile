@@ -1,17 +1,15 @@
 # For more information, please refer to https://aka.ms/vscode-docker-python
-FROM python:3.10-slim
+FROM python:3.11
 
 # Set the working directory in the container to /app
-WORKDIR /app
+WORKDIR /user/src/app
 
-# Add the current directory contents into the container at /app
-ADD . /app
+COPY './requirements.txt' .
 
 # Install any needed packages specified in requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install -r requirements.txt
 
 # Make port 5000 available to the world outside this container
-EXPOSE 5000
+COPY . .
 
-# Run app.py when the container launches
-CMD ["python", "app.py"]
+ENTRYPOINT [ "python", "app.py" ]
