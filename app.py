@@ -25,7 +25,7 @@ def create_app():
     # Generate a good salt using: secrets.SystemRandom().getrandbits(128)
     salt = secrets.SystemRandom().getrandbits(128)
     app.config['SECURITY_PASSWORD_SALT'] = os.environ.get("SECURITY_PASSWORD_SALT", salt.to_bytes(16, 'big'))
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////Users/jackdrevnyak/Desktop/Tract/instance/tract.db'
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 
 
     # Initialize extensions inside create_app()
