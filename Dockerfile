@@ -12,4 +12,4 @@ RUN pip install -r requirements.txt
 # Make port 5000 available to the world outside this container
 COPY . .
 
-ENTRYPOINT [ "python", "app.py" ]
+ENTRYPOINT ["gunicorn", "app:app", "-b", "0.0.0.0:8000"]
