@@ -14,7 +14,9 @@ from models import Equipment, MaintenanceTask, User, Role
 from forms import LoginForm, RegistrationForm, EquipmentForm
 from flask_bcrypt import Bcrypt
 import uuid
-import secrets
+from dotenv import load_dotenv
+
+load_dotenv()  # take environment variables from .env.
 
 
 def create_app():
@@ -22,40 +24,34 @@ def create_app():
     app = Flask(__name__)
 
     # Set up your Flask app's secret key and salt
-    app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY", 'pf9Wkove4IKEAXvy-cQkeDPhv9Cb3Ag-wyJILbq_dFw')
-    salt = secrets.SystemRandom().getrandbits(128)
-    app.config['SECURITY_PASSWORD_SALT'] = os.environ.get("SECURITY_PASSWORD_SALT", salt.to_bytes(16, 'big'))
+    app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY")
+    app.config['SECURITY_PASSWORD_SALT'] = os.environ.get("SECURITY_PASSWORD_SALT")
 
     # Configure the database
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///instance/tract.db')
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 
     # Initialize SQLAlchemy
     db = SQLAlchemy(app)
-
 
     # Initialize extensions inside create_app()
     bcrypt = Bcrypt(app)
     migrate = Migrate(app, db)
 
-
     # Setup Flask-Security-Too
     user_datastore = SQLAlchemyUserDatastore(db, User, Role)
     security = Security(app, user_datastore)
-    
-    # Rehash passwords function
-    def rehash_passwords():
-        users = User.query.all()
-        for user in users:
-            hashed_password = bcrypt.generate_password_hash(user.password).decode('utf-8')
-            user.password = hashed_password
-        db.session.commit()
-    
+
     # Initialize the database schema
     init_db()
 
     login_manager = LoginManager()
     login_manager.init_app(app)
     login_manager.login_view = 'login'
+    
+    @login_manager.user_loader
+    def load_user(user_id):
+        return User.query.get(user_id)  # No need to convert to int(user_id)
+
     
     @login_manager.user_loader
     def load_user(user_id):
@@ -276,10 +272,7 @@ def create_app():
 
     return app
 
-app = create_app()
+    app = create_app()
 
-if __name__ == '__main__':
-    with app.app_context():
-        rehash_passwords()
-    
-    # app.run(host='0.0.0.0', port=8000)
+    if __name__ == '__main__':
+        app.run()
