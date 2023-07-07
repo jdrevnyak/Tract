@@ -3,3 +3,6 @@ flask_sqlalchemy
 python-barcode
 Pillow
 python-dateutil
+Flask-Migrate
+flask-wtf
+bcrypt

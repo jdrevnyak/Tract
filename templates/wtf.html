@@ -1,0 +1,21 @@
+{% macro render_field(field) %}
+  {{ field.label }}
+  {{ field(**kwargs) }}
+  {% if field.errors %}
+    <ul class="errors">
+    {% for error in field.errors %}
+      <li>{{ error }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endmacro %}
+
+{% macro render_form(form) %}
+  <form method="{{ form.meta.request_method }}" action="{{ form.meta.action }}"{{ form.meta.csrf }}>
+    {{ form.hidden_tag() }}
+    {% for field in form %}
+      {{ render_field(field) }}
+    {% endfor %}
+    {{ form.submit() }}
+  </form>
+{% endmacro %}

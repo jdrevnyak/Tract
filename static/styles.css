@@ -1,6 +1,10 @@
 /* styles.css */
 
 /* Global styles */
+.loginbody {
+  background-color: #0073aa;
+}
+
 body {
   font-family: Arial, sans-serif;
   margin: 0;
@@ -25,11 +29,18 @@ body {
 }
 
 .logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   flex: 0 0 auto;
-  margin-right: 10x; /* Adjust this value to add spacing between the logo and sidebar */
   width: auto;
-  margin-top: 20px;
-  margin-bottom: 20px;
+}
+
+.drevtech {
+  margin-top: 5px;
+  color: white;
+  margin-bottom: 50px;
+  text-align: center;
 }
 
 
@@ -139,7 +150,6 @@ p {
 
 img {
   max-width: 200px;
-  margin-bottom: 20px;
 }
 
 ul {
@@ -178,4 +188,73 @@ li {
   color: #fff;
   text-decoration: none;
   border-radius: 4px;
+}
+
+.form_container {
+  width: 45%;
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 30px;
+}
+
+.form-signin {
+  background-color: #f8f9fa;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  padding: 15px;
+}
+
+.form-signin h1 {
+  font-size: 24px;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.form-signin .form-group {
+  margin-bottom: 20px;
+}
+
+.form-signin label {
+  font-weight: 500;
+}
+
+.form-signin .form-control {
+  height: 40px;
+  width: 95%;
+  margin-top: 10px;
+}
+
+.form-signin::placeholder {
+  font-size: medium;
+  margin-left: 10px;
+}
+
+
+.form-signin .form-check {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.form-signin .form-check-label {
+  font-weight: normal;
+  margin-left: 5px;
+}
+
+.form-signin .btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+  display: block;
+  margin: 0 auto;
+  width: 150px;
+  font-size: medium;
+}
+
+.form-signin .btn-primary:hover {
+  background-color: #0069d9;
+  border-color: #0062cc;
+}
+
+.form-signin .btn-primary:focus {
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5);
 }

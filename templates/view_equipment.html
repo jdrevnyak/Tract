@@ -2,7 +2,6 @@
 <html>
 <head>
     <title>View Equipment</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
         .container {
@@ -67,7 +66,7 @@
 </head>
 <body>
 
-    {% extends 'base.html' %}
+    {% extends 'basee.html' %}
     {% block content %}
     <div class="squeeze">
     <div class="container">
@@ -76,6 +75,7 @@
             <a href="{{ url_for('edit_equipment', id=equipment.id) }}"><i class="fas fa-edit"></i></a>
             <div class="equipment-details">
                 <p>ID: {{ equipment.id }}</p>
+                <p>Room #: {{ equipment.room }}</p>
                 <p>Barcode: {{ equipment.barcode }}</p>
             </div>
         </div>
@@ -109,6 +109,7 @@
         </table>
     </div>
     </div>
+    
     {% endblock %}
 </body>
 </html>

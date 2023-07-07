@@ -1,23 +1,30 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Edit Equipment</title>
-</head>
-<body>
-    {% extends 'base.html' %}
-
-    {% block content %}
-    <div class="squeeze">
-        <h1>Edit Equipment</h1>
+{% extends 'basee.html' %}
+{% block content %}
+<div class="squeeze">
+    <h1>Edit Equipment</h1>
+    <div class="form-container">
         <form method="POST">
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" value="{{ equipment.name }}">
-            <label for="barcode">Barcode:</label>
-            <input type="text" id="barcode" name="barcode" value="{{ equipment.barcode }}">
-            <input type="submit" value="Save Changes">
+            {{ form.hidden_tag() }}  {# Include CSRF token #}
+            <div class="form-field">
+                <label for="name">Name:</label>
+                {{ form.name(class="text-field") }}
+            </div>
+            <div class="form-field">
+                <label for="room">Room #:</label>
+                {{ form.room(class="select-field") }}  {# Replace the existing input field with the SelectField #}
+            </div>
+            <div class="form-field">
+                <label for="barcode">Barcode:</label>
+                {{ form.barcode(class="text-field") }}
+            </div>
+            <div class="form-field">
+                <label for="is_active">Active?</label>
+                {{ form.is_active(class="checkbox-field") }}
+            </div>
+            <div class="form-field">
+                <input type="submit" value="Save Changes" class="submit-button">
+            </div>
         </form>
-        </div>
-    {% endblock %}
-    
-</body>
-</html>
+    </div>
+</div>
+{% endblock %}

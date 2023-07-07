@@ -1,15 +1,67 @@
 <!DOCTYPE html>
+{% from 'wtf.html' import csrf_token %}
+
 <html>
 <head>
     <title>Upcoming Maintenance Tasks</title>
+    <style>
+        .box-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .box {
+            width: 150px;
+            height: 100px;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin: 0 10px;
+        }
+
+        .box p {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .box h2 {
+            margin: 0;
+            margin-top:10px;
+            font-size: 24px;
+        }
+    </style>
 </head>
+
 <body>
 
-    {% extends 'base.html' %}
+    {% extends 'basee.html' %}
 
     {% block content %}
     <div class="squeeze">
-      <h1>Welcome to Tract</h1>
+        {% if current_user.is_authenticated %}
+        <h1>Hi {{ current_user.username }}!</h1>
+        {% endif %}
+
+        <div class="box-container">
+            <div class="box">
+                <p>Total Machines</p>
+                <h2>{{ total_machines }}</h2>
+            </div>
+            <div class="box">
+              <p>Machines Down</p>
+              <h2>{{ total_machines - total_active_machines }}</h2>
+            </div>
+            <div class="box">
+              <p>Upcoming Tasks</p>
+              <h2>{{ total_tasks }}</h2>
+            </div>
+        </div>
     </div>
     {% endblock %}
 </body>

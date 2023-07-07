@@ -2,7 +2,6 @@
 <html>
 <head>
     <title>Add New Maintenance Task</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -52,7 +51,7 @@
     </style>
 </head>
 <body>
-    {% extends 'base.html' %}
+    {% extends 'basee.html' %}
     {% block content %}
     <div class="squeeze">
     <h1>Add New Maintenance Task for {{ equipment.name }}</h1>

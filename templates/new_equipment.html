@@ -1,11 +1,11 @@
 <!DOCTYPE html>
+{% import 'wtf.html' as wtf %}
 <html>
 <head>
     <title>Add New Equipment</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    {% extends 'base.html' %}
+    {% extends 'basee.html' %}
     {% block content %}
     <div class="squeeze">
     <h1>Add New Equipment</h1>
@@ -14,6 +14,10 @@
             <div class="form-field">
                 <label for="name">Name:</label>
                 <input type="text" id="name" name="name">
+            </div>
+            <div class="form-field">
+                <label for="room">Room #:</label>
+                {{ form.room(class="select-field") }}  {# Replace the existing input field with the SelectField #}
             </div>
             <div class="form-field">
                 <label for="barcode">Barcode:</label>

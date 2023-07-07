@@ -1,0 +1,33 @@
+<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+{% block content %}
+  <div class="form_container">
+    <div class="logo">
+        <img src="{{ url_for('static', filename='images/tractwhite.png') }}" alt="Logo">
+    </div>
+    <p class="drevtech">by Drevtech</p>
+    <form class="form-signin" method="POST">
+      <h1 class="h3 mb-3 font-weight-normal">Register</h1>
+      {{ form.csrf_token }}
+      <div class="form-group">
+        <label for="username" class="sr-only">Username</label>
+        {{ form.username(class_="form-control", placeholder="Username", required=true, autofocus=true) }}
+      </div>
+      <div class="form-group">
+        <label for="email" class="sr-only">Email</label>
+        {{ form.email(class_="form-control", placeholder="Email", required=true) }}
+      </div>
+      <div class="form-group">
+        <label for="password" class="sr-only">Password</label>
+        {{ form.password(class_="form-control", placeholder="Password", required=true) }}
+      </div>
+      <div class="form-group">
+        <label for="password2" class="sr-only">Repeat Password</label>
+        {{ form.password2(class_="form-control", placeholder="Repeat Password", required=true) }}
+      </div>
+      {{ form.submit(class_="btn btn-primary btn-block", value="Register") }}
+    </form>
+  </div>
+{% endblock %}
+<body class="loginbody">
+
+</body>
