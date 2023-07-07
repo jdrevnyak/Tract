@@ -16,7 +16,7 @@ from flask_bcrypt import Bcrypt
 import uuid
 from dotenv import load_dotenv
 
-load_dotenv()  # take environment variables from .env.
+load_dotenv('flask.env')
 
 
 def create_app():
