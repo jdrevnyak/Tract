@@ -96,15 +96,21 @@
             </thead>
             <tbody>
                 {% for task in equipment.maintenance_tasks %}
-                <tr>
-                    <td>{{ task.description }}</td>
-                    <td>{{ task.next_date }}</td>
-                    <td>
-                        <a href="{{ url_for('edit_maintenance', id=task.id) }}"><i class="fas fa-edit"></i></a>
-                        <a href="{{ url_for('delete_maintenance', id=task.id) }}"><i class="fas fa-trash"></i></a>
-                    </td>
-                </tr>
-                {% endfor %}
+            <tr>
+                <td>{{ task.description }}</td>
+                <td>{{ task.next_date }}</td>
+                <td>
+                    <a href="{{ url_for('edit_maintenance', id=task.id) }}"><i class="fas fa-edit"></i></a>
+                    <form action="{{ url_for('delete_maintenance', id=task.id) }}" method="post" style="display: inline-block;">
+                        <input type="hidden" name="_method" value="post">
+                        <button type="submit" style="background: none; border: none; padding: 0; font-size: inherit;">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+
             </tbody>
         </table>
     </div>

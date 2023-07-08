@@ -12,6 +12,7 @@ from database import db_session, Base, engine, init_db
 from flask_migrate import Migrate
 from models import Equipment, MaintenanceTask, User, Role
 from forms import LoginForm, RegistrationForm, EquipmentForm
+from sqlalchemy.exc import SQLAlchemyError
 from flask_bcrypt import Bcrypt
 import uuid
 import secrets
@@ -142,15 +143,34 @@ def create_app():
 
         return render_template('new_equipment.html', form=form)
 
+
     @app.route('/equipment/<int:id>/delete', methods=['POST'])
     @login_required
     def delete_equipment(id):
         equipment = Equipment.query.get(id)
-        if equipment:
-            equipment = db.session.merge(equipment)   # Merge the object into the session
-            db.session.delete(equipment)    # Delete the object
-            db.session.commit()             # Commit the changes
-        return redirect(url_for('list_equipment'))
+        if not equipment:
+            abort(404)
+
+        try:
+            # Get the associated maintenance tasks
+            maintenance_tasks = MaintenanceTask.query.filter_by(equipment_id=id).all()
+
+            # Delete each maintenance task
+            for task in maintenance_tasks:
+                merged_task = db.session.merge(task)  # Merge the task into the session
+                db.session.delete(merged_task)  # Delete the merged task
+
+            # Delete the equipment
+            merged_equipment = db.session.merge(equipment)  # Merge the equipment into the session
+            db.session.delete(merged_equipment)  # Delete the merged equipment
+
+            db.session.commit()
+
+            return redirect(url_for('list_equipment'))
+        except SQLAlchemyError as e:
+            db.session.rollback()
+            return redirect(url_for('list_equipment'))
+
 
     @app.route('/equipment/<int:id>/edit', methods=['GET', 'POST'])
     @login_required
@@ -269,11 +289,16 @@ def create_app():
     @app.route('/maintenance/<int:id>/delete', methods=['POST'])
     @login_required
     def delete_maintenance(id):
-        task = MaintenanceTask.query.get(id)
-        equipment_id = task.equipment_id
-        db.session.delete(task)
-        db.session.commit()
-        return redirect(url_for('view_equipment', id=equipment_id))
+        task = db.session.query(MaintenanceTask).get(id)
+        if task:
+            equipment_id = task.equipment_id
+            db.session.delete(task)
+            db.session.commit()
+            return redirect(url_for('view_equipment', id=equipment_id))
+        else:
+            flash('Maintenance task not found.', 'error')
+            return redirect(url_for('equipment'))
+
 
     return app
 
