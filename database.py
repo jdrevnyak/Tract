@@ -5,7 +5,7 @@ import os
 
 project_dir = os.path.dirname(os.path.abspath(__file__))
 database_file = os.path.join(project_dir, 'instance', 'tract.db')
-engine = create_engine('sqlite:///site/wwwroot/tract.db')
+engine = create_engine('sqlite:////home/site/wwwroot/tract.db')
 
 db_session = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=engine))
 Base = declarative_base()
