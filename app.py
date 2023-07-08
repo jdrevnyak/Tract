@@ -14,10 +14,10 @@ from models import Equipment, MaintenanceTask, User, Role
 from forms import LoginForm, RegistrationForm, EquipmentForm
 from flask_bcrypt import Bcrypt
 import uuid
+import secrets
 from dotenv import load_dotenv
 
 load_dotenv('flask.env')
-
 
 def create_app():
     # Create the Flask app
@@ -33,25 +33,30 @@ def create_app():
     # Initialize SQLAlchemy
     db = SQLAlchemy(app)
 
+
     # Initialize extensions inside create_app()
     bcrypt = Bcrypt(app)
     migrate = Migrate(app, db)
 
+
     # Setup Flask-Security-Too
     user_datastore = SQLAlchemyUserDatastore(db, User, Role)
     security = Security(app, user_datastore)
-
+    
+    # # Rehash passwords function
+    # def rehash_passwords():
+    #     users = User.query.all()
+    #     for user in users:
+    #         hashed_password = bcrypt.generate_password_hash(user.password).decode('utf-8')
+    #         user.password = hashed_password
+    #     db.session.commit()
+    
     # Initialize the database schema
     init_db()
 
     login_manager = LoginManager()
     login_manager.init_app(app)
     login_manager.login_view = 'login'
-    
-    @login_manager.user_loader
-    def load_user(user_id):
-        return User.query.get(user_id)  # No need to convert to int(user_id)
-
     
     @login_manager.user_loader
     def load_user(user_id):
@@ -272,7 +277,10 @@ def create_app():
 
     return app
 
-    app = create_app()
+app = create_app()
 
-    if __name__ == '__main__':
-        app.run()
+if __name__ == '__main__':
+    with app.app_context():
+        rehash_passwords()
+    
+    # app.run(host='0.0.0.0', port=8000)
