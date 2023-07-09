@@ -59,16 +59,29 @@
         <label for="description">Description:</label>
         <input type="text" id="description" name="description">
         <label for="frequency">Frequency:</label>
-        <select id="frequency" name="frequency">
-            <option value="none">None</option>
+        <select id="frequency" name="frequency" onchange="showDateField(this)">
             <option value="daily">Daily</option>
             <option value="weekly">Weekly</option>
             <option value="biweekly">Biweekly</option>
             <option value="monthly">Monthly</option>
+            <option value="once">Once</option>
         </select>
+
+        <!-- The date input field is hidden by default and will only show when 'Once' is selected -->
+        <div id="onceDateField" style="display: none;">
+            <label for="onceDate">Date:</label>
+            <input type="date" id="onceDate" name="onceDate">
+        </div>
         <input type="submit" value="Add Task">
     </form>
 </div>
+
+<script>
+    function showDateField(select) {
+        var dateField = document.getElementById('onceDateField');
+        dateField.style.display = select.value == 'once' ? 'block' : 'none';
+    }
+</script>
     {% endblock %}
 </body>
 </html>

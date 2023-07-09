@@ -35,6 +35,23 @@
             margin-top:10px;
             font-size: 24px;
         }
+
+        .no-style-link {
+            color: inherit;      /* Inherit the color from the parent element */
+            text-decoration: none;  /* Remove underline */
+            display: block;      /* Make the link occupy the full box */
+        }
+    
+        /* If you want to remove any potential link color change on hover */
+        .no-style-link:hover {
+            color: inherit;
+        }
+
+        /* Center table headers */
+        th {
+            text-align: center;
+        }
+
     </style>
 </head>
 
@@ -49,19 +66,59 @@
         {% endif %}
 
         <div class="box-container">
+            <a class="no-style-link" href="{{ url_for('list_equipment') }}">
+                <div class="box">
+                    <p>Total Machines</p>
+                    <h2>{{ total_machines }}</h2>
+                </div>
+            </a>
             <div class="box">
-                <p>Total Machines</p>
-                <h2>{{ total_machines }}</h2>
+                <p>Machines Down</p>
+                <h2>{{ total_machines - total_active_machines }}</h2>
             </div>
             <div class="box">
-              <p>Machines Down</p>
-              <h2>{{ total_machines - total_active_machines }}</h2>
+                <p>Upcoming Tasks</p>
+                <h2>{{ total_tasks }}</h2>
             </div>
-            <div class="box">
-              <p>Upcoming Tasks</p>
-              <h2>{{ total_tasks }}</h2>
-            </div>
-        </div>
+        </div>  
+        
+        <div class="upcoming-tasks">
+            <h2>Maintenance Tasks</h2>
+            {% if upcoming_tasks %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Equipment</th>
+                        <th>Room</th>
+                        <th>Task</th>
+                        <th>Maintenance Date</th>
+                        <th>Mark Complete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for task in upcoming_tasks %}
+                    <tr>
+                        <td>{{ task.equipment.name }}</td>
+                        <td>{{ task.equipment.room }}</td>
+                        <td>{{ task.description }}</td>
+                        <td>{{ task.next_date.strftime('%m/%d/%Y') }}</td>
+                        <td>
+                            <form action="{{ url_for('delete_maintenance', id=task.id, redirect_route='home') }}" method="post" style="display: inline-block;">
+                                <input type="hidden" name="_method" value="post">
+                                <button type="submit" style="background: none; border: none; padding: 0; font-size: inherit;">
+                                    <i class="fas fa-check" style="color: #77bb41;"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p>No maintenance needed</p>
+            {% endif %}
+        </div>        
+        
     </div>
     {% endblock %}
 </body>

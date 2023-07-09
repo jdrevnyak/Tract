@@ -29,6 +29,6 @@ class RegistrationForm(FlaskForm):
 
 class EquipmentForm(FlaskForm):
     name = StringField('Name')
-    room = SelectField('Room #', choices=[('116a', '116a'), ('116b', '116b'), ('118', '118'), ('120', '120'), ('122', '122')])
+    room = SelectField('Room #', choices=[('116A', '116A'), ('116B', '116B'), ('118', '118'), ('120', '120'), ('122', '122')])
     barcode = StringField('Barcode')
     is_active = BooleanField('Active')

@@ -27,6 +27,9 @@ def create_app():
     # Set up your Flask app's secret key and salt
     app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY")
     app.config['SECURITY_PASSWORD_SALT'] = os.environ.get("SECURITY_PASSWORD_SALT")
+    app.config['SQLALCHEMY_POOL_SIZE'] = 20
+    app.config['SQLALCHEMY_MAX_OVERFLOW'] = 30
+
 
     # Configure the database
     app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
@@ -118,7 +121,11 @@ def create_app():
         total_machines = Equipment.query.count()
         total_tasks = MaintenanceTask.query.count()
         total_active_machines = Equipment.query.filter_by(is_active=True).count()
-        return render_template('home.html', total_machines=total_machines, total_active_machines=total_active_machines, total_tasks=total_tasks)
+            
+            # Fetch upcoming tasks and order them by next_date
+        upcoming_tasks = MaintenanceTask.query.order_by(MaintenanceTask.next_date.asc()).limit(10).all()
+        
+        return render_template('home.html', total_machines=total_machines, total_active_machines=total_active_machines, total_tasks=total_tasks, upcoming_tasks=upcoming_tasks)
 
     @app.route('/equipment')
     @login_required
@@ -227,29 +234,31 @@ def create_app():
             description = request.form['description']
             frequency = request.form['frequency']
 
-            today = date.today()
-            if frequency != 'none':
-                if frequency == 'daily':
-                    occurrence = 1
-                elif frequency == 'weekly':
-                    occurrence = 7
-                elif frequency == 'biweekly':
-                    occurrence = 14
-                elif frequency == 'monthly':
-                    occurrence = 30
+            # A dictionary to map frequencies to days
+            frequency_mapping = {'daily': 1, 'weekly': 7, 'biweekly': 14, 'monthly': 30}
 
-                next_date = today + timedelta(days=occurrence)
-            else:
-                occurrence = None
-                next_date = None
+            if frequency == 'once':
+                # When the frequency is 'once', we only create one task with the given date
+                once_date = request.form['onceDate']
+                task = MaintenanceTask(equipment_id=id, description=description, next_date=once_date, frequency=frequency)
+                db.session.add(task)
+            elif frequency in frequency_mapping:
+                # If the frequency is daily, weekly, biweekly, or monthly, we create multiple tasks
+                today = date.today()
+                for i in range(12):  # Create tasks for the next 12 occurrences
+                    next_date = today + timedelta(days=frequency_mapping[frequency]*i)
+                    task = MaintenanceTask(equipment_id=id, description=description, next_date=next_date, frequency=frequency)
+                    db.session.add(task)
+            elif frequency == 'none':
+                # If the frequency is 'none', we create a task without a date
+                task = MaintenanceTask(equipment_id=id, description=description, next_date=None, frequency=frequency)
+                db.session.add(task)
 
-            task = MaintenanceTask(equipment_id=id, description=description, next_date=next_date, frequency=frequency, occurrence=occurrence)
-            db.session.add(task)
             db.session.commit()
-
             return redirect(url_for('view_equipment', id=id))
 
         return render_template('new_maintenance.html', equipment=equipment)
+
 
 
     @app.route('/maintenance/<int:id>/edit', methods=['GET', 'POST'])
@@ -286,15 +295,18 @@ def create_app():
         return render_template('edit_maintenance.html', task=task)
 
 
-    @app.route('/maintenance/<int:id>/delete', methods=['POST'])
+    @app.route('/maintenance/<int:id>/delete/<string:redirect_route>', methods=['POST'])
     @login_required
-    def delete_maintenance(id):
+    def delete_maintenance(id, redirect_route):
         task = db.session.query(MaintenanceTask).get(id)
         if task:
             equipment_id = task.equipment_id
             db.session.delete(task)
             db.session.commit()
-            return redirect(url_for('view_equipment', id=equipment_id))
+            if redirect_route not in ['home', 'view_equipment']:
+                flash('Invalid redirect route, redirecting to home.', 'error')
+                return redirect(url_for('home'))
+            return redirect(url_for(redirect_route, id=equipment_id) if redirect_route == 'view_equipment' else url_for(redirect_route))
         else:
             flash('Maintenance task not found.', 'error')
             return redirect(url_for('equipment'))
@@ -307,5 +319,4 @@ app = create_app()
 if __name__ == '__main__':
     with app.app_context():
         rehash_passwords()
-    
-    # app.run(host='0.0.0.0', port=8000)
+    app.run(host='0.0.0.0')
