@@ -58,7 +58,7 @@ class Role(Base, RoleMixin):
 
 class User(Base, UserMixin):
     __tablename__ = 'user'
-    id = Column(String(36), primary_key=True)  # Change the type to String(36) for UUID
+    id = Column(String(36), primary_key=True) 
     email = Column(String(255), unique=True)
     username = Column(String(255), unique=True, nullable=False)
     password = Column(String(255), nullable=False)

@@ -30,7 +30,7 @@ def create_app():
     app.config['SQLALCHEMY_POOL_SIZE'] = 20
     app.config['SQLALCHEMY_MAX_OVERFLOW'] = 30
 
-        # Compute the database path
+    # Compute the database path
     db_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'instance', 'tract.db')
     DATABASE_URL = 'sqlite:///{}'.format(db_path)
 
@@ -67,7 +67,7 @@ def create_app():
     
     @login_manager.user_loader
     def load_user(user_id):
-        return User.query.get(user_id)  # No need to convert to int(user_id)
+        return User.query.get(user_id)  
 
 
     @app.route('/loginuser', methods=['GET', 'POST'])
@@ -76,7 +76,6 @@ def create_app():
         if form.validate_on_submit():
             user = User.query.filter_by(email=form.email.data).first()
             if user and bcrypt.check_password_hash(user.password, form.password.data):
-                # Login and validate the user
                 login_user(user)
                 flash('Logged in successfully.')
 
@@ -89,13 +88,10 @@ def create_app():
     def register():
         form = RegistrationForm()
         if form.validate_on_submit():
-            # Generate fs_uniquifier using a unique identifier like UUID
             fs_uniquifier = str(uuid.uuid4())
 
-            # Hash the password using bcrypt
             hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
 
-            # Create a new user object with hashed password and save it to the database
             user = User(
                 username=form.username.data,
                 email=form.email.data,
@@ -107,7 +103,6 @@ def create_app():
             db.session.add(user)
             db.session.commit()
 
-            # Redirect the user to the login page after successful registration
             flash('Registration successful! Please log in.')
             return redirect(url_for('login'))
 
@@ -125,7 +120,6 @@ def create_app():
         total_tasks = MaintenanceTask.query.count()
         total_active_machines = Equipment.query.filter_by(is_active=True).count()
         
-        # Calculate the start and end dates for "this week"
         today = datetime.now().date()
         one_week_from_now = today + timedelta(days=7)
 
@@ -158,7 +152,6 @@ def create_app():
         form = EquipmentForm(request.form)
         if request.method == 'POST' or form.validate():
             is_active = True
-            # Generate the barcode image and save it
             barcode_image = Code128(form.barcode.data, writer=ImageWriter())
             barcode_image.save(f'static/barcodes/{form.barcode.data}')
             equipment = Equipment(name=form.name.data, room=form.room.data, barcode=form.barcode.data, is_active=is_active)
@@ -176,20 +169,17 @@ def create_app():
         equipment = Equipment.query.get(id)
         if not equipment:
             abort(404)
-
+        #Check if there are any maintenance tasks associated with the equipment. Delete them first.
         try:
-            # Get the associated maintenance tasks
             maintenance_tasks = MaintenanceTask.query.filter_by(equipment_id=id).all()
 
-            # Delete each maintenance task
             for task in maintenance_tasks:
-                merged_task = db.session.merge(task)  # Merge the task into the session
-                db.session.delete(merged_task)  # Delete the merged task
+                merged_task = db.session.merge(task)  
+                db.session.delete(merged_task) 
 
             # Delete the equipment
-            merged_equipment = db.session.merge(equipment)  # Merge the equipment into the session
-            db.session.delete(merged_equipment)  # Delete the merged equipment
-
+            merged_equipment = db.session.merge(equipment)  
+            db.session.delete(merged_equipment) 
             db.session.commit()
 
             return redirect(url_for('list_equipment'))
@@ -205,9 +195,9 @@ def create_app():
         form = EquipmentForm(obj=equipment)
 
         if request.method == 'POST' and form.validate():
-            form.populate_obj(equipment)  # Update the equipment object with the form data
-            db.session.merge(equipment)  # Merge the updated equipment object into the session
-            db.session.commit()  # Commit the changes to the database
+            form.populate_obj(equipment) 
+            db.session.merge(equipment)
+            db.session.commit()
             flash('Equipment updated successfully.', 'success')
             return redirect(url_for('list_equipment'))
 
@@ -253,23 +243,19 @@ def create_app():
             description = request.form['description']
             frequency = request.form['frequency']
 
-            # A dictionary to map frequencies to days
             frequency_mapping = {'daily': 1, 'weekly': 7, 'biweekly': 14, 'monthly': 30}
 
             if frequency == 'once':
-                # When the frequency is 'once', we only create one task with the given date
                 once_date = request.form['onceDate']
                 task = MaintenanceTask(equipment_id=id, description=description, next_date=once_date, frequency=frequency)
                 db.session.add(task)
             elif frequency in frequency_mapping:
-                # If the frequency is daily, weekly, biweekly, or monthly, we create multiple tasks
                 today = date.today()
-                for i in range(12):  # Create tasks for the next 12 occurrences
+                for i in range(12):  
                     next_date = today + timedelta(days=frequency_mapping[frequency]*i)
                     task = MaintenanceTask(equipment_id=id, description=description, next_date=next_date, frequency=frequency)
                     db.session.add(task)
             elif frequency == 'none':
-                # If the frequency is 'none', we create a task without a date
                 task = MaintenanceTask(equipment_id=id, description=description, next_date=None, frequency=frequency)
                 db.session.add(task)
 
