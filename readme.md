@@ -21,6 +21,9 @@ Use the `BLANK_README.md` to get started.
 ### Built With
 
 [![Python][Python.js]][Python-url]
+[![HTML][HTML.js]][HTML-url]
+[![Flask][Flask.js]][Flask-url]
+
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -131,12 +134,12 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/othneildrew
 [product-screenshot]: images/screenshot.png
-[Python.js]: https://img.shields.io/badge/python-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
+[Python.js]: https://img.shields.io/badge/python-20232A?style=for-the-badge&logo=python&logoColor=61DAFB
 [Python-url]: https://www.python.org
-[React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
-[React-url]: https://reactjs.org/
-[Vue.js]: https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D
-[Vue-url]: https://vuejs.org/
+[HTML.js]: https://img.shields.io/badge/HTML-20232A?style=for-the-badge&logo=html&logoColor=4FC08D
+[HTML-url]: https://www.w3schools.com/html/
+[Flask.js]: https://img.shields.io/badge/Flask-10242b?style=for-the-badge&logo=flask&logoColor=FF3E00
+[Flask-url]: https://flask.palletsprojects.com/en/2.3.x/
 [Angular.io]: https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white
 [Angular-url]: https://angular.io/
 [Svelte.dev]: https://img.shields.io/badge/Svelte-4A4A55?style=for-the-badge&logo=svelte&logoColor=FF3E00
