@@ -134,9 +134,9 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/othneildrew
 [product-screenshot]: images/screenshot.png
-[Python.js]: https://img.shields.io/badge/python-61DAFB?style=for-the-badge&logo=python&logoColor=61DAFB
+[Python.js]: https://img.shields.io/badge/python-61DAFB?style=for-the-badge&logo=python&logoColor=20232A
 [Python-url]: https://www.python.org
-[HTML.js]: https://img.shields.io/badge/HTML-20232A?style=for-the-badge&logo=html&logoColor=4FC08D
+[HTML.js]: https://img.shields.io/badge/HTML-4FC08D?style=for-the-badge&logo=html&logoColor=10242b
 [HTML-url]: https://www.w3schools.com/html/
 [Flask.js]: https://img.shields.io/badge/Flask-10242b?style=for-the-badge&logo=flask&logoColor=FF3E00
 [Flask-url]: https://flask.palletsprojects.com/en/2.3.x/
