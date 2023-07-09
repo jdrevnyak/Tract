@@ -135,6 +135,15 @@ def create_app():
     def list_equipment():
         equipment = Equipment.query.all()
         return render_template('list_equipment.html', equipment=equipment)
+    
+    @app.route('/maintenance')
+    @login_required
+    def list_maintenance():
+        upcoming_tasks = MaintenanceTask.query.order_by(MaintenanceTask.next_date.asc()).all()
+        
+        return render_template('list_maintenance.html', upcoming_tasks=upcoming_tasks)
+
+
 
     @app.route('/equipment/new', methods=['GET', 'POST'])
     @login_required

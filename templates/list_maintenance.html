@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+{% import 'wtf.html' as wtf %}
+
+
+<html>
+<head>
+    <title>Equipment List</title>
+<style>
+    .delete-button {
+      margin-left: 5px;
+  }
+</style>
+</head>
+<body>
+{% extends 'basee.html' %}
+
+{% block content %}
+<div class="squeeze">
+<div class="upcoming-tasks">
+  <h2>All Maintenance Tasks</h2>
+  
+  {% if upcoming_tasks %}
+  <table>
+      <thead>
+          <tr>
+              <th>Equipment</th>
+              <th>Room</th>
+              <th>Task</th>
+              <th>Maintenance Date</th>
+              <th>Mark Complete</th>
+          </tr>
+      </thead>
+      <tbody>
+          {% for task in upcoming_tasks %}
+          <tr>
+              <td>{{ task.equipment.name }}</td>
+              <td>{{ task.equipment.room }}</td>
+              <td>{{ task.description }}</td>
+              <td>{{ task.next_date.strftime('%m/%d/%Y') }}</td>
+              <td>
+                  <form action="{{ url_for('delete_maintenance', id=task.id, redirect_route='home') }}" method="post" style="display: inline-block;">
+                      <input type="hidden" name="_method" value="post">
+                      <button type="submit" style="background: none; border: none; padding: 0; font-size: inherit;">
+                          <i class="fas fa-check" style="color: #77bb41;"></i>
+                      </button>
+                  </form>
+              </td>
+          </tr>
+          {% endfor %}
+      </tbody>
+  </table>
+  {% else %}
+  <p>No maintenance needed</p>
+  {% endif %}
+</div>      
+</div>
+
+{% endblock %}
+
+</body>
+</html>
