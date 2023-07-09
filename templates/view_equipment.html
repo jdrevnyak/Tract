@@ -9,59 +9,6 @@
             flex-direction: row;
         }
 
-        .equipment-info {
-            margin-right: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-        }
-
-        .equipment-info h1 {
-            margin-bottom: 10px;
-            margin-right: 10px;
-        }
-
-        .equipment-info a {
-            margin-bottom: 10px;
-        }
-
-        .equipment-details {
-            margin-top: 10px;
-            margin-bottom: 10px;
-        }
-
-        .equipment-details p {
-            margin: 0;
-        }
-
-        .barcode {
-            flex-shrink: 0;
-            margin-left: auto;
-        }
-
-        .maintenance-tasks {
-            margin-top: 20px;
-        }
-
-        .maintenance-tasks table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .maintenance-tasks th,
-        .maintenance-tasks td {
-            padding: 8px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .maintenance-tasks th {
-            background-color: #f2f2f2;
-        }
-
-        .new-task-button {
-            margin-top: 10px;
-        }
     </style>
 </head>
 <body>
@@ -69,20 +16,20 @@
     {% extends 'basee.html' %}
     {% block content %}
     <div class="squeeze">
-    <div class="container">
-        <div class="equipment-info">
-            <h1>{{ equipment.name }}</h1>
-            <a href="{{ url_for('edit_equipment', id=equipment.id) }}"><i class="fas fa-edit"></i></a>
-            <div class="equipment-details">
-                <p>ID: {{ equipment.id }}</p>
-                <p>Room #: {{ equipment.room }}</p>
-                <p>Barcode: {{ equipment.barcode }}</p>
+        <div class="container">
+            <div class="equipment-info">
+                <div>
+                    <h1>{{ equipment.name }}</h1>
+                    <a href="{{ url_for('edit_equipment', id=equipment.id) }}"><i class="fas fa-edit"></i></a>
+                </div>
+                <div class="equipment-details">
+                    <p>ID: {{ equipment.id }} | Room #: {{ equipment.room }} | Up & Running: {{ equipment.is_active }}</p>
+                </div>
+            </div>
+            <div class="barcode">
+                <img src="{{ url_for('static', filename='barcodes/' + equipment.barcode + '.png') }}" alt="Barcode">
             </div>
         </div>
-        <div class="barcode">
-            <img src="{{ url_for('static', filename='barcodes/' + equipment.barcode + '.png') }}" alt="Barcode">
-        </div>
-    </div>
 
     <h2>Maintenance Tasks <a class="new-task-button" href="{{ url_for('new_maintenance', id=equipment.id) }}"><i class="fas fa-plus"></i></a></h2>
     <div class="maintenance-tasks">

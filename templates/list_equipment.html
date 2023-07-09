@@ -39,7 +39,6 @@
         <td>{{ equip.barcode }}</td>
         <td>
           <a href="{{ url_for('view_equipment', id=equip.id) }}"><i class="fas fa-eye"></i></a>
-          <a href="{{ url_for('edit_equipment', id=equip.id) }}"><i class="fas fa-edit"></i></a>
           <a href="#" class="delete-button" onclick="event.preventDefault(); if (confirmDelete()) document.getElementById('delete-form-{{ equip.id }}').submit();"><i class="fas fa-trash-alt"></i></a>
           <form id="delete-form-{{ equip.id }}" action="{{ url_for('delete_equipment', id=equip.id) }}" method="POST" style="display: none;">
           <input type="hidden" name="_method" value="DELETE">

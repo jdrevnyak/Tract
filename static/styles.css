@@ -17,6 +17,7 @@ body {
 .container {
   flex: 1; /* Added */
   display: flex;
+  justify-content: space-between;
 }
 
 .sidebar {
@@ -148,6 +149,11 @@ p {
   margin-bottom: 10px;
 }
 
+a {
+  color: inherit;      /* Inherit the color from the parent element */
+  text-decoration: none;  /* Remove underline */
+}
+
 img {
   max-width: 200px;
 }
@@ -257,4 +263,72 @@ li {
 
 .form-signin .btn-primary:focus {
   box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5);
+}
+
+.equipment-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.equipment-info > div {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.equipment-info h1 {
+  margin-right: 10px;  /* Adjust this value to your liking */
+}
+
+.barcode {
+  flex-shrink: 0;
+  margin-left: auto;
+  align-self: flex-start;  /* Aligns the barcode to the top of the flex container */
+}
+
+.barcode img {
+  max-width: 200px;
+  max-height: 150px; /* Adjust this to your liking */
+}
+
+.equipment-info a {
+  margin-bottom: 10px;
+}
+
+.equipment-details {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.equipment-details p {
+  margin: 0;
+}
+
+.barcode {
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+.maintenance-tasks {
+  margin-top: 20px;
+}
+
+.maintenance-tasks table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.maintenance-tasks th,
+.maintenance-tasks td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.maintenance-tasks th {
+  background-color: #f2f2f2;
+}
+
+.new-task-button {
+  margin-top: 10px;
 }

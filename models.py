@@ -64,4 +64,5 @@ class User(Base, UserMixin):
     password = Column(String(255), nullable=False)
     active = Column(Boolean())
     fs_uniquifier = Column(String(255), unique=True, nullable=False)
+    fs_uniquifier = Column(String(255), nullable=True)
     roles = relationship('Role', secondary='roles_users', backref=backref('users', lazy='dynamic'))
