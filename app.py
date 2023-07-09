@@ -30,9 +30,12 @@ def create_app():
     app.config['SQLALCHEMY_POOL_SIZE'] = 20
     app.config['SQLALCHEMY_MAX_OVERFLOW'] = 30
 
+        # Compute the database path
+    db_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'instance', 'tract.db')
+    DATABASE_URL = 'sqlite:///{}'.format(db_path)
 
     # Configure the database
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+    app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
 
     # Initialize SQLAlchemy
     db = SQLAlchemy(app)
