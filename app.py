@@ -1,7 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from barcode import Code128
 from barcode.writer import ImageWriter
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime
 from flask.globals import _app_ctx_stack
 import os
 from werkzeug.security import check_password_hash
@@ -124,12 +124,19 @@ def create_app():
         total_machines = Equipment.query.count()
         total_tasks = MaintenanceTask.query.count()
         total_active_machines = Equipment.query.filter_by(is_active=True).count()
-            
-            # Fetch upcoming tasks and order them by next_date
-        upcoming_tasks = MaintenanceTask.query.order_by(MaintenanceTask.next_date.asc()).limit(10).all()
+        
+        # Calculate the start and end dates for "this week"
+        today = datetime.now().date()
+        one_week_from_now = today + timedelta(days=7)
+
+        # Fetch upcoming tasks and order them by next_date
+        upcoming_tasks = MaintenanceTask.query.filter(
+            MaintenanceTask.next_date >= today,
+            MaintenanceTask.next_date <= one_week_from_now
+        ).order_by(MaintenanceTask.next_date.asc()).limit(10).all()
         
         return render_template('home.html', total_machines=total_machines, total_active_machines=total_active_machines, total_tasks=total_tasks, upcoming_tasks=upcoming_tasks)
-
+    
     @app.route('/equipment')
     @login_required
     def list_equipment():

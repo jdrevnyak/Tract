@@ -76,14 +76,16 @@
                 <p>Machines Down</p>
                 <h2>{{ total_machines - total_active_machines }}</h2>
             </div>
+            <a class="no-style-link" href="{{ url_for('list_maintenance') }}">
             <div class="box">
-                <p>Upcoming Tasks</p>
+                <p>Total Tasks</p>
                 <h2>{{ total_tasks }}</h2>
             </div>
+        </a>
         </div>  
         
         <div class="upcoming-tasks">
-            <h2>Maintenance Tasks</h2>
+            <h2>This Weeks Tasks</h2>
             {% if upcoming_tasks %}
             <table>
                 <thead>
