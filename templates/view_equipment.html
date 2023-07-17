@@ -20,7 +20,9 @@
             <div class="equipment-info">
                 <div>
                     <h1>{{ equipment.name }}</h1>
+                    {% if current_user.has_permission(CAN_EDIT_EQUIPMENT) %}
                     <a href="{{ url_for('edit_equipment', id=equipment.id) }}"><i class="fas fa-edit"></i></a>
+                    {% endif %}
                 </div>
                 <div class="equipment-details">
                     <p>ID: {{ equipment.id }} | Room #: {{ equipment.room }} | Up & Running: {{ equipment.is_active }}</p>
@@ -31,7 +33,7 @@
             </div>
         </div>
 
-    <h2>Maintenance Tasks <a class="new-task-button" href="{{ url_for('new_maintenance', id=equipment.id) }}"><i class="fas fa-plus" style="color: #77bb41;"></i></a></h2>
+    <h2>Maintenance Tasks {% if current_user.has_permission(CAN_ADD_MAINTENANCE) %}<a class="new-task-button" href="{{ url_for('new_maintenance', id=equipment.id) }}"><i class="fas fa-plus" style="color: #77bb41;"></i></a></h2>{% endif %}
     <div class="maintenance-tasks">
         <table>
             <thead>

@@ -7,8 +7,8 @@ import os
 from werkzeug.security import check_password_hash
 from flask import Flask, render_template_string, render_template, request, redirect, url_for, flash, abort
 from flask_login import login_user, logout_user, current_user, login_required, LoginManager
-from flask_security import Security, current_user, auth_required, hash_password, SQLAlchemyUserDatastore
-from database import db_session, Base, engine, init_db
+from flask_security import Security, current_user, auth_required, hash_password, SQLAlchemyUserDatastore, roles_required
+from database import db, init_db
 from flask_migrate import Migrate
 from models import Equipment, MaintenanceTask, User, Role, MaintenanceHistory
 from forms import LoginForm, RegistrationForm, EquipmentForm
@@ -38,17 +38,22 @@ def create_app():
     app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
 
     # Initialize SQLAlchemy
-    db = SQLAlchemy(app)
+    #db = SQLAlchemy(app)
 
 
     # Initialize extensions inside create_app()
     bcrypt = Bcrypt(app)
     migrate = Migrate(app, db)
 
+    # Initialize SQLAlchemy
+    db.init_app(app)
 
     # Setup Flask-Security-Too
     user_datastore = SQLAlchemyUserDatastore(db, User, Role)
     security = Security(app, user_datastore)
+    
+    # Initialize the database schema
+    init_db()
     
     # # Rehash passwords function
     # def rehash_passwords():
@@ -58,8 +63,6 @@ def create_app():
     #         user.password = hashed_password
     #     db.session.commit()
     
-    # Initialize the database schema
-    init_db()
 
     login_manager = LoginManager()
     login_manager.init_app(app)
@@ -68,6 +71,28 @@ def create_app():
     @login_manager.user_loader
     def load_user(user_id):
         return User.query.get(user_id)  
+    
+    
+    @app.route('/create_roles', methods=['GET', 'POST'])
+    def create_roles():
+        # Create some roles
+        admin_role = Role(name='admin', description='Administrator', permissions=Role.CAN_ADD_EQUIPMENT | Role.CAN_EDIT_EQUIPMENT)
+        user_role = Role(name='user', description='Regular user', permissions=0) # No special permissions
+
+
+        # Add roles to the database
+        db.session.add(admin_role)
+        db.session.add(user_role)
+        db.session.commit()
+
+        # Assign a role to a user
+        user = User.query.first()
+        if user:
+            user.roles.append(admin_role)  # or user_role
+            db.session.commit()
+
+        return 'Roles created and assigned!'
+
 
 
     @app.route('/loginuser', methods=['GET', 'POST'])
@@ -88,9 +113,18 @@ def create_app():
     def register():
         form = RegistrationForm()
         if form.validate_on_submit():
+            print('Form validation successful.')
+
             fs_uniquifier = str(uuid.uuid4())
+            print(f'fs_uniquifier: {fs_uniquifier}')
 
             hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+            print('Password hashed successfully.')
+
+            user_role = Role.query.filter_by(name='user').first()
+            if not user_role:
+                print('User role does not exist. Please create it.')
+                return render_template('register_user.html', form=form)
 
             user = User(
                 username=form.username.data,
@@ -98,15 +132,27 @@ def create_app():
                 password=hashed_password,
                 fs_uniquifier=fs_uniquifier,
                 active=True,
+                roles=[user_role],
                 id=fs_uniquifier
             )
-            db.session.add(user)
-            db.session.commit()
+            print(f'User created: {user}')
 
-            flash('Registration successful! Please log in.')
+            try:
+                db.session.add(user)
+                db.session.commit()
+                print('User added to database successfully.')
+            except Exception as e:
+                print(f'Error adding user to database: {e}')
+
+            print('Attempting to redirect...')
             return redirect(url_for('login'))
 
+        print('Rendering form...')
+        print(form.errors)
         return render_template('register_user.html', form=form)
+
+
+
         
     @app.route('/logout')
     def logout():
@@ -135,7 +181,7 @@ def create_app():
     @login_required
     def list_equipment():
         equipment = Equipment.query.all()
-        return render_template('list_equipment.html', equipment=equipment)
+        return render_template('list_equipment.html', equipment=equipment, CAN_ADD_EQUIPMENT=Role.CAN_ADD_EQUIPMENT)
     
     @app.route('/maintenance')
     @login_required
@@ -149,6 +195,9 @@ def create_app():
     @app.route('/equipment/new', methods=['GET', 'POST'])
     @login_required
     def new_equipment():
+        if not current_user.has_permission(Role.CAN_ADD_EQUIPMENT):
+            session['show_modal'] = True
+        #return redirect(url_for('home'))
         form = EquipmentForm(request.form)
         if request.method == 'POST' or form.validate():
             is_active = True
@@ -236,7 +285,7 @@ def create_app():
             db.session.commit()
             flash('Maintenance task created successfully', 'success')
             return redirect('/equipment/' + str(id))
-        return render_template('view_equipment.html', equipment=equipment, tasks=tasks, maintenance_history=maintenance_history)
+        return render_template('view_equipment.html', equipment=equipment, tasks=tasks, maintenance_history=maintenance_history, CAN_EDIT_EQUIPMENT=Role.CAN_EDIT_EQUIPMENT, CAN_ADD_MAINTENANCE=Role.CAN_ADD_MAINTENANCE)
 
 
     @app.route('/equipment/<int:id>/maintenance/new', methods=['GET', 'POST'])
@@ -323,7 +372,7 @@ def create_app():
             
         else:
             flash('Maintenance task not found.', 'error')
-        if redirect_route not in ['home', 'view_equipment']:
+        if redirect_route not in ['home', 'view_equipment', 'list_maintenance']:
             flash('Invalid redirect route, redirecting to home.', 'error')
             return redirect(url_for('home'))
         return redirect(url_for(redirect_route, id=equipment_id) if redirect_route == 'view_equipment' else url_for(redirect_route))
@@ -339,7 +388,7 @@ def create_app():
             equipment_id = task.equipment_id
             db.session.delete(task)
             db.session.commit()
-            if redirect_route not in ['home', 'view_equipment']:
+            if redirect_route not in ['home', 'view_equipment', 'list_maintenance']:
                 flash('Invalid redirect route, redirecting to home.', 'error')
                 return redirect(url_for('home'))
             return redirect(url_for(redirect_route, id=equipment_id) if redirect_route == 'view_equipment' else url_for(redirect_route))
@@ -347,6 +396,10 @@ def create_app():
             flash('Maintenance task not found.', 'error')
             return redirect(url_for('equipment'))
 
+
+    @app.errorhandler(403)
+    def access_forbidden(error):
+        return render_template('403.html'), 403
 
     return app
 
