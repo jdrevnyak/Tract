@@ -38,12 +38,18 @@
               <td>{{ task.description }}</td>
               <td>{{ task.next_date.strftime('%m/%d/%Y') }}</td>
               <td>
-                  <form action="{{ url_for('delete_maintenance', id=task.id, redirect_route='home') }}" method="post" style="display: inline-block;">
-                      <input type="hidden" name="_method" value="post">
-                      <button type="submit" style="background: none; border: none; padding: 0; font-size: inherit;">
-                          <i class="fas fa-check" style="color: #77bb41;"></i>
-                      </button>
-                  </form>
+                <form action="{{ url_for('complete_maintenance', id=task.id, redirect_route='list_maintenance') }}" method="post" style="display: inline-block;">
+                    <input type="hidden" name="_method" value="post">
+                    <button type="submit" style="background: none; border: none; padding: 0; margin-right: 10px; font-size: inherit; cursor: pointer;">
+                        <i class="fas fa-check" style="color: #77bb41;"></i>
+                    </button>
+                </form>
+                <form action="{{ url_for('delete_maintenance', id=task.id, redirect_route='list_maintenance') }}" method="post" style="display: inline-block;">
+                    <input type="hidden" name="_method" value="post">
+                    <button type="submit" style="background: none; border: none; padding: 0; font-size: inherit; cursor: pointer;">
+                        <i class="fa-solid fa-trash" style="color: #C70039;"></i>
+                    </button>
+                </form>
               </td>
           </tr>
           {% endfor %}

@@ -24,7 +24,7 @@ class MaintenanceTask(Base):
     id = Column(Integer, primary_key=True)
     equipment_id = Column(Integer, ForeignKey('equipment.id'), nullable=False)
     description = Column(String(200), nullable=False)
-    next_date = Column(DateTime, nullable=False)
+    next_date = Column(DateTime, nullable=True)
     equipment = relationship('Equipment', backref=backref('maintenance_tasks', lazy=True))
     frequency = Column(String(20))
     occurrence = Column(Integer)
@@ -66,3 +66,16 @@ class User(Base, UserMixin):
     fs_uniquifier = Column(String(255), unique=True, nullable=False)
     fs_uniquifier = Column(String(255), nullable=True)
     roles = relationship('Role', secondary='roles_users', backref=backref('users', lazy='dynamic'))
+
+class MaintenanceHistory(Base):
+    __tablename__ = 'maintenance_history'
+    id = Column(Integer, primary_key=True)
+    equipment_id = Column(Integer, ForeignKey('equipment.id'), nullable=False)
+    description = Column(String(200), nullable=False)
+    completed_date = Column(DateTime, nullable=False)
+    equipment = relationship('Equipment', backref=backref('maintenance_history', lazy=True))
+    frequency = Column(String(20))
+    occurrence = Column(Integer)
+    
+    def __repr__(self):
+        return '<MaintenanceHistory %r>' % self.description

@@ -81,7 +81,8 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 ## Roadmap
 
 - [x] Maintenance list
-- [ ] Implement maintenance history for each piece of equipment.
+- [x] Implement maintenance history for each piece of equipment.
+- [ ] Setup User Roles & Permissions
 - [ ] If machine is down highlight in light red
 - [ ] Filter tables
 - [ ] Assign tasks to users

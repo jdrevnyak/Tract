@@ -10,7 +10,7 @@ from flask_login import login_user, logout_user, current_user, login_required, L
 from flask_security import Security, current_user, auth_required, hash_password, SQLAlchemyUserDatastore
 from database import db_session, Base, engine, init_db
 from flask_migrate import Migrate
-from models import Equipment, MaintenanceTask, User, Role
+from models import Equipment, MaintenanceTask, User, Role, MaintenanceHistory
 from forms import LoginForm, RegistrationForm, EquipmentForm
 from sqlalchemy.exc import SQLAlchemyError
 from flask_bcrypt import Bcrypt
@@ -27,8 +27,8 @@ def create_app():
     # Set up your Flask app's secret key and salt
     app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY")
     app.config['SECURITY_PASSWORD_SALT'] = os.environ.get("SECURITY_PASSWORD_SALT")
-    app.config['SQLALCHEMY_POOL_SIZE'] = 20
-    app.config['SQLALCHEMY_MAX_OVERFLOW'] = 30
+    app.config['SQLALCHEMY_POOL_SIZE'] = 25
+    app.config['SQLALCHEMY_MAX_OVERFLOW'] = 35
 
     # Compute the database path
     db_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'instance', 'tract.db')
@@ -208,9 +208,14 @@ def create_app():
     @login_required
     def view_equipment(id):
         equipment = Equipment.query.get(id)
+        tasks = MaintenanceTask.query.filter_by(equipment_id=id).order_by(MaintenanceTask.next_date).all()
+
         if equipment is None:
             flash('Equipment not found', 'error')
             return redirect('/equipment')
+        # Get the maintenance history for this equipment
+        maintenance_history = MaintenanceHistory.query.filter_by(equipment_id=id).order_by(MaintenanceHistory.completed_date.desc()).all()
+        
         if request.method == 'POST':
             description = request.form['description']
             frequency = request.form['frequency']
@@ -231,7 +236,7 @@ def create_app():
             db.session.commit()
             flash('Maintenance task created successfully', 'success')
             return redirect('/equipment/' + str(id))
-        return render_template('view_equipment.html', equipment=equipment)
+        return render_template('view_equipment.html', equipment=equipment, tasks=tasks, maintenance_history=maintenance_history)
 
 
     @app.route('/equipment/<int:id>/maintenance/new', methods=['GET', 'POST'])
@@ -246,7 +251,8 @@ def create_app():
             frequency_mapping = {'daily': 1, 'weekly': 7, 'biweekly': 14, 'monthly': 30}
 
             if frequency == 'once':
-                once_date = request.form['onceDate']
+                once_date_string = request.form['onceDate']
+                once_date = datetime.strptime(once_date_string, '%Y-%m-%d').date()
                 task = MaintenanceTask(equipment_id=id, description=description, next_date=once_date, frequency=frequency)
                 db.session.add(task)
             elif frequency in frequency_mapping:
@@ -298,6 +304,31 @@ def create_app():
             return redirect(url_for('view_equipment', id=task.equipment_id))
 
         return render_template('edit_maintenance.html', task=task)
+    
+    @app.route('/maintenance/<int:id>/complete/<string:redirect_route>', methods=['POST'])
+    @login_required
+    def complete_maintenance(id, redirect_route):
+        task = db.session.query(MaintenanceTask).get(id)
+        if task:
+            equipment_id = task.equipment_id
+            # Create a new history record
+            history = MaintenanceHistory(
+                equipment_id=equipment_id,
+                description=task.description,
+                completed_date=datetime.now()
+            )
+            db.session.add(history)
+            db.session.delete(task)
+            db.session.commit()
+            
+        else:
+            flash('Maintenance task not found.', 'error')
+        if redirect_route not in ['home', 'view_equipment']:
+            flash('Invalid redirect route, redirecting to home.', 'error')
+            return redirect(url_for('home'))
+        return redirect(url_for(redirect_route, id=equipment_id) if redirect_route == 'view_equipment' else url_for(redirect_route))
+
+
 
 
     @app.route('/maintenance/<int:id>/delete/<string:redirect_route>', methods=['POST'])
