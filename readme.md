@@ -83,9 +83,10 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 - [x] Maintenance list
 - [x] Implement maintenance history for each piece of equipment.
 - [ ] Setup User Roles & Permissions
+- [ ] Assign tasks to users
 - [ ] If machine is down highlight in light red
 - [ ] Filter tables
-- [ ] Assign tasks to users
+
 
 
 
