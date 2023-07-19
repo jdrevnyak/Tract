@@ -84,6 +84,7 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 - [x] Implement maintenance history for each piece of equipment.
 - [x] Setup User Roles & Permissions
 - [ ] Assign tasks to users
+- [ ] Allow user to scan equipment barcode in app
 - [ ] If machine is down highlight in light red
 - [ ] Filter tables
 
