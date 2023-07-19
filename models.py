@@ -23,9 +23,11 @@ class MaintenanceTask(db.Model):
     __tablename__ = 'maintenance_task'
     id = Column(Integer, primary_key=True)
     equipment_id = Column(Integer, ForeignKey('equipment.id'), nullable=False)
+    user_id = Column(String(36), ForeignKey('user.id', name='fk_user_id'), nullable=True)
     description = Column(String(200), nullable=False)
     next_date = Column(DateTime, nullable=True)
     equipment = relationship('Equipment', backref=backref('maintenance_tasks', lazy=True))
+    user = relationship('User', backref=backref('maintenance_tasks', lazy=True)) 
     frequency = Column(String(20))
     occurrence = Column(Integer)
     
@@ -86,16 +88,10 @@ class User(db.Model, UserMixin):
     fs_uniquifier = Column(String(255), unique=True, nullable=False)
     fs_uniquifier = Column(String(255), nullable=True)
     roles = db.relationship('Role', secondary='roles_users', backref=db.backref('users', lazy='dynamic'))
-    
+        
     def has_permission(self, permission):
-        if self.roles is None:
-            return False
-        for role in self.roles:
-            if (role.permissions & permission) == permission:
-                return True
-        return False
-
-
+        return self.roles is not None and \
+            any(role.permissions & permission == permission for role in self.roles)
 
 
 class MaintenanceHistory(db.Model):

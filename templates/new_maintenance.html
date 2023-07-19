@@ -56,6 +56,13 @@
     <div class="squeeze">
     <h1>Add New Maintenance Task for {{ equipment.name }}</h1>
     <form method="POST">
+        <label for="user_id">Assign to:</label>
+        <select id="user_id" name="user_id">
+            <option value="">All Users</option>  <!-- "All Users" option -->
+            {% for user in users %}
+            <option value="{{ user.id }}">{{ user.username }}</option>
+            {% endfor %}
+        </select>
         <label for="description">Description:</label>
         <input type="text" id="description" name="description">
         <label for="frequency">Frequency:</label>

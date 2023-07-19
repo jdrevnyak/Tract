@@ -2,6 +2,7 @@ from flask_sqlalchemy import SQLAlchemy
 from barcode import Code128
 from barcode.writer import ImageWriter
 from datetime import date, timedelta, datetime
+from dateutil.relativedelta import relativedelta
 from flask.globals import _app_ctx_stack
 import os
 from werkzeug.security import check_password_hash
@@ -168,12 +169,17 @@ def create_app():
         
         today = datetime.now().date()
         one_week_from_now = today + timedelta(days=7)
+        
+        if current_user.has_role('admin'):
+        # admins can see all tasks
+            upcoming_tasks = MaintenanceTask.query.order_by(MaintenanceTask.next_date.asc()).all()
+            
+        else:
+            upcoming_tasks = MaintenanceTask.query.filter(
+                MaintenanceTask.next_date.between(today, one_week_from_now),
+                (MaintenanceTask.user_id == current_user.id) | (MaintenanceTask.user_id == None),
+            ).order_by(MaintenanceTask.next_date.asc()).limit(10).all()
 
-        # Fetch upcoming tasks and order them by next_date
-        upcoming_tasks = MaintenanceTask.query.filter(
-            MaintenanceTask.next_date >= today,
-            MaintenanceTask.next_date <= one_week_from_now
-        ).order_by(MaintenanceTask.next_date.asc()).limit(10).all()
         
         return render_template('home.html', total_machines=total_machines, total_active_machines=total_active_machines, total_tasks=total_tasks, upcoming_tasks=upcoming_tasks)
     
@@ -186,11 +192,17 @@ def create_app():
     @app.route('/maintenance')
     @login_required
     def list_maintenance():
-        upcoming_tasks = MaintenanceTask.query.order_by(MaintenanceTask.next_date.asc()).all()
         
+        if current_user.has_role('admin'):
+        # admins can see all tasks
+            upcoming_tasks = MaintenanceTask.query.order_by(MaintenanceTask.next_date.asc()).all()
+        else:
+            upcoming_tasks = MaintenanceTask.query.filter(
+                (MaintenanceTask.user_id == current_user.id) |
+                (MaintenanceTask.user_id == None)
+            ).order_by(MaintenanceTask.next_date.asc()).all()
+
         return render_template('list_maintenance.html', upcoming_tasks=upcoming_tasks)
-
-
 
     @app.route('/equipment/new', methods=['GET', 'POST'])
     @login_required
@@ -292,32 +304,53 @@ def create_app():
     @login_required
     def new_maintenance(id):
         equipment = Equipment.query.get(id)
+        users = User.query.all()  # fetch all users
+        users.append(None)  # add a None option to represent all users
 
         if request.method == 'POST':
-            description = request.form['description']
-            frequency = request.form['frequency']
+            print(request.form)  # Debug: print the form data to the console
+
+            user_id = request.form.get('user_id')  # use .get() instead of [] to avoid KeyError
+            if user_id == '':
+                user_id = None  # convert empty string to None
+            description = request.form.get('description')
+            frequency = request.form.get('frequency')
+            once_date_string = request.form.get('onceDate')
+
+            if not description or not frequency:
+                print('Form data is missing. Please ensure all fields are filled in.')
+                return render_template('new_maintenance.html', equipment=equipment, users=users)
 
             frequency_mapping = {'daily': 1, 'weekly': 7, 'biweekly': 14, 'monthly': 30}
 
             if frequency == 'once':
-                once_date_string = request.form['onceDate']
+                if not once_date_string:
+                    print('onceDate is missing. Please select a date.')
+                    return render_template('new_maintenance.html', equipment=equipment, users=users)
                 once_date = datetime.strptime(once_date_string, '%Y-%m-%d').date()
-                task = MaintenanceTask(equipment_id=id, description=description, next_date=once_date, frequency=frequency)
-                db.session.add(task)
+                task = MaintenanceTask(equipment_id=id, user_id=user_id, description=description, next_date=once_date, frequency=frequency)
+                db.session.add(task)            
             elif frequency in frequency_mapping:
                 today = date.today()
-                for i in range(12):  
-                    next_date = today + timedelta(days=frequency_mapping[frequency]*i)
-                    task = MaintenanceTask(equipment_id=id, description=description, next_date=next_date, frequency=frequency)
-                    db.session.add(task)
-            elif frequency == 'none':
-                task = MaintenanceTask(equipment_id=id, description=description, next_date=None, frequency=frequency)
-                db.session.add(task)
+                next_year_june_23 = date(today.year + 1, 6, 23)  # June 23rd of the next year
+                num_days_until_next_year_june_23 = (next_year_june_23 - today).days  # Calculate the number of days
 
+                tasks = []  # Initialize a list to hold the tasks
+                for i in range(num_days_until_next_year_june_23):  # Create tasks until June 23rd of the next year
+                    next_date = today + timedelta(days=frequency_mapping[frequency]*i)
+                    task = MaintenanceTask(equipment_id=id, user_id=user_id, description=description, next_date=next_date, frequency=frequency)
+                    tasks.append(task)  # Add the task to the list
+                db.session.add_all(tasks)
+            else:
+                print(f'Invalid frequency: {frequency}')
+                return render_template('new_maintenance.html', equipment=equipment, users=users)
+            
             db.session.commit()
+            
             return redirect(url_for('view_equipment', id=id))
 
-        return render_template('new_maintenance.html', equipment=equipment)
+        return render_template('new_maintenance.html', equipment=equipment, users=users)
+
 
 
 
