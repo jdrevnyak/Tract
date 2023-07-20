@@ -1,33 +1,43 @@
-<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+<html>
+<head>
+    <title>Register</title>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" rel="stylesheet">
+</head>
 {% block content %}
-  <div class="form_container">
-    <div class="logo">
+<div class="container-fluid d-flex justify-content-center align-items-center" style="height: 100vh; background-color: #0073aa;">
+  <div class="card text-white bg-dark mb-3" style="max-width: 422px;">
+    <div class="card-body p-4">
+      <div class="logo text-center mb-4">
         <img src="{{ url_for('static', filename='images/tractwhite.png') }}" alt="Logo">
+      </div>
+      <form method="POST">
+        {{ form.csrf_token }}
+        <div class="mb-3">
+          <label for="username" class="form-label">Name</label>
+          {{ form.username(class_="form-control", placeholder="Name", required=true, autofocus=true) }}
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          {{ form.email(class_="form-control", placeholder="Email", required=true) }}
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          {{ form.password(class_="form-control", placeholder="Password", required=true) }}
+        </div>
+        <div class="mb-3">
+          <label for="password2" class="form-label">Repeat Password</label>
+          {{ form.password2(class_="form-control", placeholder="Repeat Password", required=true) }}
+        </div>
+        {{ form.submit(class_="btn btn-block", style="background-color: #08ADA3; color: white; border: none; border-radius: 6px; padding: 14px 18px;", value="Register") }}
+        <p class="text-center mt-3">Already have an account? <a href="{{ url_for('login') }}" class="text-light">Login</a></p>
+      </form>
     </div>
-    <p class="drevtech">by Drevtech</p>
-    <form class="form-signin" method="POST">
-      <h1 class="h3 mb-3 font-weight-normal">Register</h1>
-      {{ form.csrf_token }}
-      <div class="form-group">
-        <label for="username" class="sr-only">Name</label>
-        {{ form.username(class_="form-control", placeholder="Name", required=true, autofocus=true) }}
-      </div>
-      <div class="form-group">
-        <label for="email" class="sr-only">Email</label>
-        {{ form.email(class_="form-control", placeholder="Email", required=true) }}
-      </div>
-      <div class="form-group">
-        <label for="password" class="sr-only">Password</label>
-        {{ form.password(class_="form-control", placeholder="Password", required=true) }}
-      </div>
-      <div class="form-group">
-        <label for="password2" class="sr-only">Repeat Password</label>
-        {{ form.password2(class_="form-control", placeholder="Repeat Password", required=true) }}
-      </div>
-      {{ form.submit(class_="btn btn-primary btn-block", value="Register") }}
-    </form>
   </div>
+</div>
 {% endblock %}
-<body class="loginbody">
+<body>
 
 </body>
+</html>

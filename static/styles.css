@@ -1,359 +1,153 @@
-/* styles.css */
-
-/* Global styles */
-.loginbody {
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  font-family: 'Helvetica Neue', sans-serif;
   background-color: #0073aa;
 }
 
-
 body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  min-height: 100vh; /* Added */
-  display: flex; /* Added */
-  flex-direction: column; /* Added */
+  margin-top: 0 !important; ;
+  background-color: #454A5F;
 }
 
 .container {
-  flex: 1; /* Added */
-  display: flex;
-  justify-content: space-between;
-}
-
-
-.container, .sidebar, .sidebar a {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;  /* ensures padding doesn't increase element size */
-}
-
-.sidebar {
-  width: 250px;
-  background-color: #0073aa;
-  padding: 20px 0;  /* Remove left and right padding */
-  color: #fff;
-  flex-shrink: 0;
-  box-sizing: border-box;
-}
-
-.sidebar a {
-  display: flex;
-  align-items: center;
-  height: 40px;
-  color: #fff;
-  text-decoration: none;
-  padding-left: 20px;  /* Add padding here instead of on the .sidebar */
-}
-
-.sidebar a i {
-  margin-right: 10px;  /* Adjust this value to your liking */
-}
-
-.sidebar a:hover {
-  color: #eee;
-}
-
-a.active {
-  display: flex;
-  align-items: center;
-  background: #00608c;
-  color: white;
-  width: 100%;
-  height: 40px;
-  padding-left: 20px;  /* Same padding as the other a elements */
-}
-
-.logo {
   display: flex;
   justify-content: center;
   align-items: center;
-  flex: 0 0 auto;
-  width: auto;
 }
 
-.drevtech {
-  margin-top: 5px;
+.card {
+  max-width: 452px; /* increased width by 15px on each side */
+  padding: 32px;
+  background-color: #1E202C !important;
+  border-radius: 12px !important;
+}
+
+.logo img {
+  max-width: 150px;
+  margin-bottom: 20px;
+}
+
+.card h1 {
+  font-size: 16px; /* reduced font size */
+  font-weight: 700;
+  line-height: 32px;
+  letter-spacing: 0em;
+  text-align: center;
   color: white;
-  margin-bottom: 50px;
-  text-align: center;
 }
 
-
-
-.content {
-  flex: 1;
-  padding: 20px;
-  background-color: #f1f1f1;
-}
-  
-  /* Page-specific styles */
-  /* Add any page-specific styles here */
-
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-table th,
-table td {
-  padding: 10px;
-  text-align: center;
-  border-bottom: 1px solid #ccc;
-}
-
-table th {
-  background-color: #f1f1f1;
-}
-
-.table-container {
-  margin-top: 20px;
-  position: relative;
-}
-
-.squeeze{
-  margin: 30px;
-}
-
-.add-button {
-  position: absolute;
-  top: 0;
-  right: 0;
-  margin: 10px;
-  padding: 10px 20px;
-  background-color: #2ecc71;
-  color: #fff;
-  text-decoration: none;
-}
-
-.add-button:hover {
-  background-color: #27ae60;
-}
-
-.form-container {
-  margin-top: 20px;
-  padding: 20px;
-  background-color: #f1f1f1;
-}
-
-.form-field {
-  margin-bottom: 10px;
-}
-
-label {
-  display: block;
-  font-weight: bold;
-}
-
-input[type="text"] {
-  width: 100%;
-  padding: 5px;
-}
-
-.submit-button {
-  padding: 10px 20px;
-  background-color: #2ecc71;
-  color: #fff;
-  border: none;
-  cursor: pointer;
-}
-
-.submit-button:hover {
-  background-color: #27ae60;
-}
-
-h1 {
-  color: #333;
-  font-size: 24px;
-  margin-bottom: 10px;
-}
-
-p {
-  color: #666;
-  margin-bottom: 10px;
-}
-
-a {
-  color: inherit;      /* Inherit the color from the parent element */
-  text-decoration: none;  /* Remove underline */
-}
-
-img {
-  max-width: 200px;
-}
-
-ul {
-  list-style-type: none;
-  margin-bottom: 20px;
-  padding: 0;
-}
-
-li {
-  margin-bottom: 10px;
-}
-
-.btn {
-  display: inline-block;
-  padding: 5px 10px;
-  background-color: #007bff;
-  color: #fff;
-  text-decoration: none;
-  border-radius: 4px;
-}
-
-.btn-edit {
-  background-color: #ffc107;
-  margin-right: 10px;
-}
-
-.btn-delete {
-  background-color: #dc3545;
-}
-
-.add-button {
-  display: flex;
-  margin: 30px;
-  padding: 10px 20px;
-  background-color: #28a745;
-  color: #fff;
-  text-decoration: none;
-  border-radius: 4px;
-}
-
-.form_container {
-  width: 45%;
-  max-width: 600px;
-  margin: 20px auto;
-  padding: 30px;
-}
-
-.form-signin {
-  background-color: #f8f9fa;
-  border: 1px solid #ced4da;
-  border-radius: 4px;
-  padding: 15px;
-}
-
-.form-signin h1 {
-  font-size: 24px;
-  text-align: center;
-  margin-bottom: 30px;
-}
-
-.form-signin .form-group {
-  margin-bottom: 20px;
-}
-
-.form-signin label {
+.form-label {
+  font-size: 15px;
   font-weight: 500;
-}
-
-.form-signin .form-control {
-  height: 40px;
-  width: 95%;
-  margin-top: 10px;
-}
-
-.form-signin::placeholder {
-  font-size: medium;
-  margin-left: 10px;
-}
-
-
-.form-signin .form-check {
-  display: flex;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.form-signin .form-check-label {
-  font-weight: normal;
-  margin-left: 5px;
-}
-
-.form-signin .btn-primary {
-  background-color: #007bff;
-  border-color: #007bff;
-  display: block;
-  margin: 0 auto;
-  width: 150px;
-  font-size: medium;
-}
-
-.form-signin .btn-primary:hover {
-  background-color: #0069d9;
-  border-color: #0062cc;
-}
-
-.form-signin .btn-primary:focus {
-  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5);
-}
-
-.equipment-info {
-  display: flex;
-  flex-direction: column;
-}
-
-.equipment-info > div {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-}
-
-.equipment-info h1 {
-  margin-right: 10px;  /* Adjust this value to your liking */
-}
-
-.barcode {
-  flex-shrink: 0;
-  margin-left: auto;
-  align-self: flex-start;  /* Aligns the barcode to the top of the flex container */
-}
-
-.barcode img {
-  max-width: 200px;
-  max-height: 150px; /* Adjust this to your liking */
-}
-
-.equipment-info a {
-  margin-bottom: 10px;
-}
-
-.equipment-details {
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-
-.equipment-details p {
-  margin: 0;
-}
-
-.barcode {
-  flex-shrink: 0;
-  margin-left: auto;
-}
-
-.maintenance-tasks {
-  margin-top: 20px;
-}
-
-.maintenance-tasks table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.maintenance-tasks th,
-.maintenance-tasks td {
-  padding: 8px;
+  line-height: 20px;
+  letter-spacing: 0em;
   text-align: left;
-  border-bottom: 1px solid #ddd;
+  align-items: center;
+  color: white;
 }
 
-.maintenance-tasks th {
-  background-color: #f2f2f2;
+.form-check .form-check-input {
+  width: 14px !important;
+  height: 14px !important;
+  margin-top: 0 !important;
 }
 
-.new-task-button {
-  margin-top: 10px;
+.form-check .form-check-label {
+  line-height: 15px !important;  /* set this to match the height of your checkbox */
+}
+.btn:focus, .btn:active, .btn:hover {
+  background-color: #06A392 !important;
+}
+
+input::placeholder {
+  font-size: 13px;
+}
+
+/* Sidebar *//* Sidebar */
+.sidebar .logo, .sidebar .drevtech {
+  display: flex; /* turns on flexbox */
+  justify-content: center; /* centers children horizontally */
+  color: #FFFFFF;
+}
+
+.sidebar .drevtech {
+  display: flex;
+  justify-content: center;
+  margin-top: -15px;
+  margin-bottom: 30px; /* adjust this value as needed */
+}
+
+
+.sidebar {
+  position: fixed; 
+  height: 100%;
+  width: 335px;
+  padding: 22px 24px 670px 25px;
+  background: #1E202C;
+  box-shadow: 1px 0px 0px 0px #454A5F;
+  display: block; /* set sidebar to display by default */
+}
+
+.sidebar a {
+  display: block;
+  padding: 8px 169px 8px 12px;
+  border-radius: 6px;
+  font-family: 'Helvetica Neue', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 24px;
+  text-align: left;
+  color: #FFFFFF;
+  text-decoration: none; /* remove underline from links */
+  margin-bottom: 13px; /* adds space between links */
+  white-space: nowrap; /* prevent text from wrapping onto the next line */
+}
+
+.sidebar a.active {
+  background-color: #454A5F;
+}
+
+.sidebar a:hover {
+  background-color: #454A5F;
+  color: #FFFFFF;
+}
+
+
+/* Hide .large-screen on small screens and adjust a tags */
+@media (max-width: 992px) {
+  .nav-text {
+    display: none; /* hide nav text */
+  }
+
+  .large-screen {
+    display: none; /* hide large screen elements */
+  }
+  .sidebar a {
+    display: flex; /* Make a elements into flex containers */
+    align-items: center; /* Center items vertically */
+    justify-content: center; /* Center items horizontally */
+    padding: 30px; /* NEW: Remove padding */
+    height: 100%; /* make a tags fill the height of the sidebar */
+    margin: 0; /* NEW: Remove margin */
+  }
+  
+  .sidebar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 80px; /* adjust as needed */
+    width: 100%;
+    bottom: 0; /* position at bottom */
+    padding: 0;
+  }
+}
+
+/* Show .large-screen on larger screens */
+@media (min-width: 992px) {
+  .large-screen {
+    display: block; /* show large screen elements */
+  }
 }

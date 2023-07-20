@@ -1,0 +1,7 @@
+{
+    "name": "Tract",
+    "short_name": "Tract",
+    "start_url": "home.html",
+    "display": "standalone",
+    "orientation": "portrait-primary"
+ }

@@ -1,33 +1,45 @@
 <!DOCTYPE html>
 {% import 'wtf.html' as wtf %}
 
-
 <html>
 <head>
     <title>Tract</title>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="manifest" href="///app.webmanifest" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
-    
-    <div class="container">
-        <div class="sidebar">
+
+    <div class="sidebar" id="sidebar">
+        <div class="large-screen">
             <div class="logo">
                 <img src="{{ url_for('static', filename='images/tractwhite.png') }}" alt="Logo">
             </div>
             <p class="drevtech">By DrevTech</p>
-            <a class="{{ 'active' if request.path == url_for('home') else '' }}" href="{{ url_for('home') }}"><i class="fa-solid fa-house"></i> Home</a>
-            <a class="{{ 'active' if request.path == url_for('list_equipment') else '' }}" href="{{ url_for('list_equipment') }}"><i class="fa-solid fa-list"></i>  Equipment List</a>
-            <a class="{{ 'active' if request.path == url_for('list_maintenance') else '' }}" href="{{ url_for('list_maintenance') }}"><i class="fa-solid fa-list-check"></i>  Maintenance Tasks</a>
-            <a href="{{ url_for('logout') }}"><i class="fa-solid fa-right-from-bracket"></i></i>  Sign Out</a>
         </div>
-        <div class="content">
-            {% block content %}
-            {% endblock %}
-        </div>
+        <a class="{{ 'active' if request.path == url_for('home') else '' }}" href="{{ url_for('home') }}">
+            <i class="fa-solid fa-house"></i>
+            <span class="nav-text">Home</span>
+        </a>
+        <a class="{{ 'active' if request.path == url_for('list_equipment') else '' }}" href="{{ url_for('list_equipment') }}">
+            <i class="fa-solid fa-list"></i>
+            <span class="nav-text">Equipment List</span>
+        </a>
+        <a class="{{ 'active' if request.path == url_for('list_maintenance') else '' }}" href="{{ url_for('list_maintenance') }}">
+            <i class="fa-solid fa-list-check"></i>
+            <span class="nav-text">Maintenance Tasks</span>
+        </a>
+        <a href="{{ url_for('logout') }}">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            <span class="nav-text">Sign Out</span>
+        </a>
+    </div>
+    <div class="content">
+        {% block content %}
+        {% endblock %}
     </div>
 </body>
-
 </html>

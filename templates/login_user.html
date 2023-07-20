@@ -1,30 +1,39 @@
-<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+<html>
+<head>
+    <title>Login</title>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" rel="stylesheet">
+</head>
 {% block content %}
-  <div class="form_container">
-    <div class="logo">
+<div class="container-fluid d-flex justify-content-center align-items-center" style="height: 100vh; background-color: #0073aa;">
+  <div class="card text-white bg-dark mb-3" style="max-width: 422px;">
+    <div class="card-body p-4">
+      <div class="logo text-center mb-4">
         <img src="{{ url_for('static', filename='images/tractwhite.png') }}" alt="Logo">
+      </div>
+      <form method="POST">
+        {{ form.csrf_token }}
+        <div class="mb-3">
+          <label for="Email" class="form-label">Email</label>
+          {{ form.email(class_="form-control", placeholder="Email", required=true, autofocus=true) }}
+        </div>
+        <div class="mb-3">
+          <label for="Password" class="form-label">Password</label>
+          {{ form.password(class_="form-control", placeholder="Password", required=true) }}
+        </div>
+        <div class="mb-3 form-check">
+          {{ form.remember_me(class_="form-check-input") }}
+          <label class="form-check-label" for="RememberMe">Remember me</label>
+        </div>
+        {{ form.submit(class_="btn btn-block", style="background-color: #08ADA3; color: white; border: none; border-radius: 6px; padding: 14px 18px;", value="Sign In") }}
+        <p class="text-center mt-3">Don't have an account? <a href="{{ url_for('register') }}" class="text-light">Register</a></p>
+      </form>
     </div>
-    <p class="drevtech">by Drevtech</p>
-    <form class="form-signin" method="POST">
-      <h1 class="h3 mb-3 font-weight-normal">Login</h1>
-      {{ form.csrf_token }}
-      <div class="form-group">
-        <label for="Email" class="sr-only">Email</label>
-        {{ form.email(class_="form-control", placeholder="Email", required=true, autofocus=true) }}
-      </div>
-      <div class="form-group">
-        <label for="Password" class="sr-only">Password</label>
-        {{ form.password(class_="form-control", placeholder="Password", required=true) }}
-      </div>
-      <div class="form-group form-check">
-        {{ form.remember_me(class_="form-check-input") }}
-        <label class="form-check-label" for="RememberMe">Remember me</label>
-      </div>
-      {{ form.submit(class_="btn btn-primary btn-block", value="Sign In") }}
-      <p class="text-center">Don't have an account? <a href="{{ url_for('register') }}">Register</a></p>
-    </form>
   </div>
+</div>
 {% endblock %}
 <body class="loginbody">
 
 </body>
+</html>
