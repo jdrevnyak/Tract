@@ -1,33 +1,48 @@
 <!DOCTYPE html>
 {% import 'wtf.html' as wtf %}
 
-
 <html>
 <head>
     <title>Equipment List</title>
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<style>
-    .delete-button {
-      margin-left: 5px;
-  }
-</style>
+    <style>
+        .delete-button {
+            margin-left: 5px;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+        /* Add this style for the arrows */
+        .sortable::after {
+            content: ' ⇅';  /* default: both up and down arrows */
+        }
+        .sortable.asc::after {
+            content: ' ↓';  /* asc: up arrow */
+        }
+        .sortable.desc::after {
+            content: ' ↑';  /* desc: down arrow */
+        }
+    </style>
 </head>
 <body>
 {% extends 'basee.html' %}
 
 {% block content %}
 <div class="squeeze">
-<div class="upcoming-tasks">
-  <h2>All Maintenance Tasks</h2>
-  
+<div class="home-breadcrumb">
+    <h1>All Maintenance Tasks</h1>
+</div>
+<div class="upcoming-tasks home-table">
   {% if upcoming_tasks %}
-  <table>
+  <div class="table-container">
+  <table id="maintenance-table">
       <thead>
           <tr>
-              <th>Equipment</th>
-              <th>Room</th>
-              <th>Task</th>
-              <th>Maintenance Date</th>
+              <th class="sortable" data-sort="equipment">Equipment</th>
+              <th class="sortable" data-sort="room">Room</th>
+              <th class="sortable" data-sort="task">Task</th>
+              <th class="sortable" data-sort="date">Maintenance Date</th>
+              <th class="sortable" data-sort="assigned">Assigned To</th>
               <th>Mark Complete</th>
           </tr>
       </thead>
@@ -38,6 +53,7 @@
               <td>{{ task.equipment.room }}</td>
               <td>{{ task.description }}</td>
               <td>{{ task.next_date.strftime('%m/%d/%Y') }}</td>
+              <td>{{ task.user.username if task.user else 'All Users' }}</td>
               <td>
                 <form action="{{ url_for('complete_maintenance', id=task.id, redirect_route='list_maintenance') }}" method="post" style="display: inline-block;">
                     <input type="hidden" name="_method" value="post">
@@ -62,6 +78,38 @@
 </div>      
 </div>
 
+<script>
+    $(document).ready(function() {
+        var sortOrder = 'asc';  // default sort order
+        var columnMapping = { 'equipment': 0, 'room': 1, 'task': 2, 'date': 3, 'assigned': 4 };  // mapping from field names to column indices
+        $('.sortable').click(function() {
+            $('.sortable').not(this).removeClass('asc desc');  // remove class from other headers
+            var sortField = $(this).data('sort');  // get the field to sort by
+            var columnIndex = columnMapping[sortField];  // get the column index from the mapping
+            sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';  // flip the sort order
+            $(this).removeClass('asc desc').addClass(sortOrder);  // add the current sort order as a class to the header
+
+            var rows = $('#maintenance-table tbody tr').get();
+
+            rows.sort(function(a, b) {
+                var A = $(a).children('td').eq(columnIndex).text().toUpperCase();
+                var B = $(b).children('td').eq(columnIndex).text().toUpperCase();
+
+                if(A < B) {
+                    return sortOrder === 'asc' ? -1 : 1;
+                }
+                if(A > B) {
+                    return sortOrder === 'asc' ? 1 : -1;
+                }
+                return 0;
+            });
+
+            $.each(rows, function(index, row) {
+                $('#maintenance-table').children('tbody').append(row);
+            });
+        });
+    });
+</script>
 {% endblock %}
 
 </body>

@@ -130,7 +130,7 @@ input::placeholder {
 .home-breadcrumb {
   display: flex;
   align-items: center;
-  justify-content: start;
+  justify-content: space-between;
   background: #1E202C;
   font-family: Helvetica Neue;
   letter-spacing: 0em;
@@ -145,6 +145,15 @@ input::placeholder {
 .home-breadcrumb h1 {
   font-size: 1.5em; /* adjust this value to your preference */
   margin: 0;
+}
+
+.home-breadcrumb .btn{
+  background-color: #06A392;
+  border: 0;
+}
+
+.home-breadcrumb .btn:hover{
+  background-color: #6c757d !important;
 }
 
 .home-card {
@@ -313,6 +322,55 @@ table tr + tr {
 }
 
 
+.dropdown {
+  position: relative;
+  display: inline-block;
+  background-color: #313545;
+  overflow: visible !important;
+
+
+}
+
+.dropdown-toggle {
+  background-color: #1E202C;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  background-color: #313545 !important;
+  border-radius: 0;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  color: white;
+  transition: display 0.5s ease-in-out; /* Add a transition effect (optional) */
+
+}
+
+.dropdown-menu a {
+  color: white;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  background-color: #313545;
+}
+
+
+.dropdown-menu a:hover {
+  background-color: #2f3245;
+  color: #FFFFFF;
+}
+
+
+
+
+
+
+
 
 
 
@@ -346,20 +404,16 @@ table tr + tr {
   }
 
 
-    /* Home Page on small Screens */
+    /*  on small Screens */
 
-    body {
-      overflow-y: scroll; /* Enable vertical scrolling on the body */
-    }
     
     .squeeze {
       margin-left: 0; /* no need for margin on the left side on small screens */
       padding: 10px;
+      padding-bottom: 92px; /* Add padding to the bottom equal to the height of the sidebar */
     }
   
-    .home-breadcrumb {
-      padding: 10px;
-    }
+
   
     .home-breadcrumb h1 {
       font-size: 1.2em; /* adjust this value to your preference */
@@ -382,9 +436,15 @@ table tr + tr {
   
     .table-container {
       padding: 8px;
-      overflow-y: auto;  /* Enable vertical scrolling inside the table container */
+    }
+
+    .dropdown-menu {
+      right: 0 !important;
+      left: auto !important;
     }
   }
+
+  
 
 /* Show .large-screen on larger screens */
 @media (min-width: 992px) {
