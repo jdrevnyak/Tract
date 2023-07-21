@@ -3,12 +3,16 @@ html, body {
   padding: 0;
   height: 100vh;
   font-family: 'Helvetica Neue', sans-serif;
-  background-color: #0073aa;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 body {
   margin-top: 0 !important; ;
-  background-color: #454A5F;
+  background-color: #454A5F !important; /* set background color to #454A5F */
+
 }
 
 .container {
@@ -18,7 +22,7 @@ body {
 }
 
 .card {
-  max-width: 452px; /* increased width by 15px on each side */
+  max-width: 40vw; /* increased width by 15px on each side */
   padding: 32px;
   background-color: #1E202C !important;
   border-radius: 12px !important;
@@ -115,6 +119,203 @@ input::placeholder {
 }
 
 
+/* Home Page */
+
+/* adjust margin to prevent overlap with sidebar */
+.squeeze {
+  margin-left: 335px; /* this should match the width of your sidebar */
+  padding: 25px;
+}
+
+.home-breadcrumb {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  background: #1E202C;
+  font-family: Helvetica Neue;
+  letter-spacing: 0em;
+  text-align: left;
+  color: white;
+  padding: 15px;
+  border-radius: 6px;
+}
+
+
+
+.home-breadcrumb h1 {
+  font-size: 1.5em; /* adjust this value to your preference */
+  margin: 0;
+}
+
+.home-card {
+  display: flex;
+  justify-content: space-between;
+  width: 100%; /* full width of parent container */
+  gap: 24px;
+  margin-top: 20px;
+}
+
+.home-card .no-style-link {
+  flex: 1 0 auto;
+}
+
+.home-card .box {
+  background: #1E202C;
+  border-radius: 6px;
+}
+
+.box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.home-card .box:hover {
+  background: #2f3245;
+
+}
+
+.no-style-link {
+  text-decoration: none;
+  display: block; /* or inline-block */
+}
+
+.box p, .box h2 {
+  color: white;
+}
+
+.box p {
+  margin-top: 10px;
+  font-size: 1.5em;
+}
+
+.box h2 {
+  font-size: 2.5em;
+}
+
+.noneed{
+  color: white;
+  
+}
+
+
+.home-table {
+  background: #1E202C;
+  width: 100%; /* fill the width of the parent container */
+  margin-top: 25px;
+}
+
+.home-table table {
+  width: 100%; /* fill the width of the parent container */
+  border-collapse: collapse; /* remove default spacing between table cells */
+}
+
+.home-table th, .home-table td {
+  padding: 4px 0; /* top and bottom padding, no left and right padding */
+  padding-left: 15px; /* add padding to the left */
+  padding-right: 10px;
+  text-align: left;
+  font-family: Helvetica Neue;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 20px;
+  letter-spacing: 0em;
+}
+
+.home-table thead th {
+  height: 60px;
+  padding: 4px 0px 4px 0px;
+  padding-left: 15px; /* add padding to the left */
+  text-align: left;
+  color: white;
+  background: #454A5F;
+}
+
+
+.home-table thead th:first-child {
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+}
+
+.home-table thead th:last-child {
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+}
+
+.home-table h2{
+  color: #FFFFFF;
+  font-family: Helvetica Neue;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 0em;
+  text-align: left;
+  padding-left: 20px;
+  padding-top: 25px;
+}
+
+.home-table thead {
+  background: #454A5F;
+  padding: 10px;
+}
+
+.home-table tbody tr {
+  background: #1E202C;
+  border-bottom: 1px solid #313545;
+}
+
+.home-table tbody td {
+  font-family: 'Helvetica Neue', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  text-align: left;
+  color: #FFFFFF;
+  padding: 15px;
+}
+
+/* Styles for the table container */
+.upcoming-tasks.home-table {
+  border-radius: 6px;
+}
+
+
+/* Styles for the table container */
+.table-container {
+  padding: 16px;
+  border-radius: 6px;
+  background: #1E202C;
+}
+
+/* Styles for the table header */
+table thead {
+  background: #454A5F;
+  border-radius: 6px;
+  padding: 4px 0px 4px 0px;
+  justify-content: space-between;
+  width: 100%; /* adjust as necessary, this will make the header fill the width of its container */
+  height: 60px; /* adjust as necessary, this will set the height of the header */
+}
+
+/* Styles for the table header text */
+table thead th {
+  font-family: 'Helvetica Neue', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 20px;
+  text-align: left;
+  color: white;
+}
+
+/* Add a gap between table rows */
+table tr + tr {
+  margin-top: 1px;
+}
+
+
+
+
+
 /* Hide .large-screen on small screens and adjust a tags */
 @media (max-width: 992px) {
   .nav-text {
@@ -143,7 +344,47 @@ input::placeholder {
     bottom: 0; /* position at bottom */
     padding: 0;
   }
-}
+
+
+    /* Home Page on small Screens */
+
+    body {
+      overflow-y: scroll; /* Enable vertical scrolling on the body */
+    }
+    
+    .squeeze {
+      margin-left: 0; /* no need for margin on the left side on small screens */
+      padding: 10px;
+    }
+  
+    .home-breadcrumb {
+      padding: 10px;
+    }
+  
+    .home-breadcrumb h1 {
+      font-size: 1.2em; /* adjust this value to your preference */
+    }
+  
+  
+    .home-table {
+      margin-top: 10px;
+    }
+  
+    .home-table th, .home-table td {
+      padding: 2px 0; /* top and bottom padding, no left and right padding */
+      padding-left: 5px; /* add padding to the left */
+      padding-right: 5px;
+    }
+    
+    .home-table tbody td {
+      padding: 5px;
+    }
+  
+    .table-container {
+      padding: 8px;
+      overflow-y: auto;  /* Enable vertical scrolling inside the table container */
+    }
+  }
 
 /* Show .large-screen on larger screens */
 @media (min-width: 992px) {
@@ -151,3 +392,4 @@ input::placeholder {
     display: block; /* show large screen elements */
   }
 }
+

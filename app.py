@@ -172,7 +172,7 @@ def create_app():
         
         if current_user.has_role('admin'):
         # admins can see all tasks
-            upcoming_tasks = MaintenanceTask.query.order_by(MaintenanceTask.next_date.asc()).all()
+            upcoming_tasks = MaintenanceTask.query.order_by(MaintenanceTask.next_date.asc()).limit(10).all()
             
         else:
             upcoming_tasks = MaintenanceTask.query.filter(
