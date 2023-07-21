@@ -9,23 +9,25 @@
     {% extends 'basee.html' %}
     {% block content %}
     <div class="squeeze">
+    <div class="home-breadcrumb">
     <h1>Add New Equipment</h1>
-    <div class="form-container">
+    </div>
+    <div class="form-card">
         <form method="POST">
-            <div class="form-field">
-                <label for="name">Name:</label>
-                <input type="text" id="name" name="name">
+            <div class="mb-3">
+                <label for="name" class="form-label">Name:</label>
+                <input type="text" id="name" name="name" class="form-control">
             </div>
-            <div class="form-field">
-                <label for="room">Room #:</label>
-                {{ form.room(class="select-field") }}  
+            <div class="mb-3">
+                <label for="room" class="form-label">Room #:</label>
+                {{ form.room(class="form-control") }}  
             </div>
-            <div class="form-field">
-                <label for="barcode">Barcode:</label>
-                <input type="text" id="barcode" name="barcode">
+            <div class="mb-3">
+                <label for="barcode" class="form-label">Barcode:</label>
+                <input type="text" id="barcode" name="barcode" class="form-control">
             </div>
-            <div class="form-field">
-                <input type="submit" value="Add Equipment" class="submit-button">
+            <div class="mb-3">
+                <input type="submit" value="Add Equipment" class="btn btn-primary">
             </div>
         </form>
     </div>

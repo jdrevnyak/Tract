@@ -56,7 +56,6 @@
               <form id="delete-form-{{ equip.id }}" action="{{ url_for('delete_equipment', id=equip.id) }}" method="POST" style="display: none;">
                 <input type="hidden" name="_method" value="DELETE">
               </form>
-              <a class="dropdown-item" href="{{ url_for('edit_equipment', id=equip.id) }}">Edit</a>
               {% endif %}
             </div>
           </div>

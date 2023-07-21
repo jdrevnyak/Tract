@@ -32,3 +32,4 @@ class EquipmentForm(FlaskForm):
     room = SelectField('Room #', choices=[('116A', '116A'), ('116B', '116B'), ('118', '118'), ('120', '120'), ('122', '122')])
     barcode = StringField('Barcode')
     is_active = BooleanField('Active')
+

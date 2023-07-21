@@ -366,6 +366,39 @@ table tr + tr {
 }
 
 
+.form-container.card {
+  background: #1E202C;
+  padding: 16px;
+  border-radius: 6px;
+}
+
+.form-label {
+  color: white;
+}
+
+.form-control {
+  background: #454A5F;
+  border: none;
+  color: white;
+}
+
+.btn {
+  background-color: #06A392 !important;
+  border: none !important;
+  color: white;
+}
+
+.btn:hover {
+  background-color: #6c757d !important;
+}
+
+
+.form-card {
+  background: #1E202C;
+  padding: 16px;
+  border-radius: 6px;
+  margin-top: 15px;
+}
 
 
 
@@ -443,6 +476,8 @@ table tr + tr {
       left: auto !important;
     }
   }
+
+  
 
   
 
