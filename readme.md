@@ -89,8 +89,8 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 - [x] Allow user to scan equipment barcode in app
 - [ ] Push notifications
 - [ ] If machine is down highlight in light red
-- [X] Filter tables (Some what need to fine tune)
-- [ ] Web App Manifest
+- [x] Filter tables (Some what need to fine tune)
+- [x] Web App Manifest
 
 
 
