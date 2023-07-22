@@ -550,6 +550,84 @@ table tr + tr {
   margin-bottom: 10px;
 }
 
+        /* Style the camera view */
+        #interactive.viewport {
+          position: relative;
+          width: 100%;
+          height: 480px;
+          overflow: hidden;
+      }
+      #interactive.viewport > canvas, #interactive.viewport > video {
+          max-width: 100%;
+          width: 100%;
+      }
+      /* Styles for the drawn box */
+      .drawingBuffer {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+      }
+      /* Flash animation for when a barcode is detected */
+      @keyframes flash {
+          0% { background-color: transparent; }
+          50% { background-color: #33ff33; }
+          100% { background-color: transparent; }
+      }
+      /* Style the scan area */
+      .scan-area {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          width: 300px;
+          height: 100px;
+          margin: -50px 0 0 -150px;
+          border: dashed 3px red;
+          box-sizing: border-box;
+      }
+
+      .barcode-input {
+        display: flex;
+        align-items: center;
+    }
+    .barcode-input input {
+        flex-grow: 1;
+    }
+    .barcode-input button {
+        background: none;
+        border: none;
+        margin-left: 5px;
+    }
+    /* Style the camera view popup */
+    .camera-view {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.8);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        display: none;
+    }
+    .camera-view.active {
+        display: flex;
+    }
+
+    #closeButton {
+        position: absolute;
+        top: 135px;
+        left: 15px;
+        background: none;
+        border: none;
+        color: #fff;
+        font-size: 24px;
+        z-index: 10;
+        cursor: pointer;
+    }
+
 @media (max-width: 992px) {
   .nav-text {
     display: none;

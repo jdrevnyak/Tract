@@ -9,29 +9,130 @@
     {% extends 'basee.html' %}
     {% block content %}
     <div class="squeeze">
-    <div class="home-breadcrumb">
-    <h1>Add New Equipment</h1>
+        <div class="home-breadcrumb">
+            <h1>Add New Equipment</h1>
+        </div>
+        <div class="form-card">
+            <form method="POST">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name:</label>
+                    <input type="text" id="name" name="name" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="room" class="form-label">Room #:</label>
+                    {{ form.room(class="form-control") }}  
+                </div>
+                <div class="mb-3">
+                    <label for="barcode" class="form-label">Barcode:</label>
+                <div class="mb-3 barcode-input">
+                    <input type="text" id="barcode" name="barcode" class="form-control">
+                    <button type="button" onclick="startScanning()"><i class="fa-regular fa-camera" style="color: #ffffff;"></i></button>
+                </div>
+                <div class="mb-3">
+                    <input type="submit" value="Add Equipment" class="btn btn-primary">
+                </div>
+            </form>
+        </div>
+
+        <!-- Popup for the video stream -->
+        <div id="cameraView" class="camera-view">
+            <button id="closeButton" onclick="stopScanning()"><i class="fa-regular fa-circle-xmark"></i></button>
+            <div id="interactive" class="viewport">
+                <!-- Scan area -->
+                <div class="scan-area"></div>
+            </div>
+        </div>
     </div>
-    <div class="form-card">
-        <form method="POST">
-            <div class="mb-3">
-                <label for="name" class="form-label">Name:</label>
-                <input type="text" id="name" name="name" class="form-control">
-            </div>
-            <div class="mb-3">
-                <label for="room" class="form-label">Room #:</label>
-                {{ form.room(class="form-control") }}  
-            </div>
-            <div class="mb-3">
-                <label for="barcode" class="form-label">Barcode:</label>
-                <input type="text" id="barcode" name="barcode" class="form-control">
-            </div>
-            <div class="mb-3">
-                <input type="submit" value="Add Equipment" class="btn btn-primary">
-            </div>
-        </form>
-    </div>
-</div>
+    <script>
+        function startScanning() {
+            // Show the camera view
+            document.querySelector('#cameraView').classList.add('active');
+
+            Quagga.init({
+                inputStream : {
+                    name : "Live",
+                    type : "LiveStream",
+                    constraints: {
+                        width: {min: 640},
+                        height: {min: 480},
+                        facingMode: "environment"
+                    },
+                    target: document.querySelector('#interactive'),  // Pointing to the video stream container
+                    area: { 
+                        top: "0%",    
+                        right: "0%",  
+                        left: "0%",   
+                        bottom: "0%"  
+                    },
+                    singleChannel: false 
+                },
+                decoder : {
+                    readers : ["code_128_reader","ean_reader", "upc_reader"]
+                }
+            }, function(err) {
+                if (err) {
+                    console.log(err);
+                    return
+                }
+                console.log("Initialization finished. Ready to start");
+                Quagga.start();
+            });
+
+            // Draw the barcode scanning box
+            Quagga.onProcessed(function(result) {
+                var drawingCtx = Quagga.canvas.ctx.overlay,
+                    drawingCanvas = Quagga.canvas.dom.overlay;
+
+                if (result) {
+                    if (result.boxes) {
+                        drawingCtx.clearRect(0, 0, parseInt(drawingCanvas.getAttribute("width")), parseInt(drawingCanvas.getAttribute("height")));
+                        result.boxes.filter(function (box) {
+                            return box !== result.box;
+                        }).forEach(function (box) {
+                            Quagga.ImageDebug.drawPath(box, {x: 0, y: 1}, drawingCtx, {color: "green", lineWidth: 2});
+                        });
+                    }
+
+                    if (result.box) {
+                        Quagga.ImageDebug.drawPath(result.box, {x: 0, y: 1}, drawingCtx, {color: "#00F", lineWidth: 2});
+                    }
+
+                    if (result.codeResult && result.codeResult.code) {
+                        Quagga.ImageDebug.drawPath(result.line, {x: 'x', y: 'y'}, drawingCtx, {color: 'red', lineWidth: 3});
+                    }
+                }
+            });
+    
+            Quagga.onDetected(function(data) {
+                var code = data.codeResult.code;
+    
+                // Populate the barcode field with the scanned data
+                document.querySelector('#barcode').value = code;
+    
+                // Stop Quagga after a barcode has been detected
+                Quagga.stop();
+
+                // Hide the camera view
+                document.querySelector('#cameraView').classList.remove('active');
+
+                // Flash the scan box
+                var drawingBuffer = document.querySelector('.drawingBuffer');
+                drawingBuffer.style.animation = 'flash 1s';
+                setTimeout(function() {
+                    drawingBuffer.style.animation = '';
+                }, 1000);
+            });
+        }
+
+        function stopScanning() {
+            // Stop Quagga
+            Quagga.stop();
+
+            // Hide the camera view
+            document.querySelector('#cameraView').classList.remove('active');
+        }
+    </script>
+    
     {% endblock %}
 </body>
 </html>

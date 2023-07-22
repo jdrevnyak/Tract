@@ -86,12 +86,11 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 - [x] Assign tasks to users
 - [x] Fix CSS for pages.
 - [x] Have tasks tables  display assigned user & Maintanence history should say who completed the task.
-- [ ] Allow user to scan equipment barcode in app
+- [x] Allow user to scan equipment barcode in app
 - [ ] Push notifications
 - [ ] If machine is down highlight in light red
 - [X] Filter tables (Some what need to fine tune)
 - [ ] Web App Manifest
-
 
 
 
