@@ -308,8 +308,6 @@ def create_app():
         users.append(None)  # add a None option to represent all users
 
         if request.method == 'POST':
-            print(request.form)  # Debug: print the form data to the console
-
             user_id = request.form.get('user_id')  # use .get() instead of [] to avoid KeyError
             if user_id == '':
                 user_id = None  # convert empty string to None
@@ -321,36 +319,74 @@ def create_app():
                 print('Form data is missing. Please ensure all fields are filled in.')
                 return render_template('new_maintenance.html', equipment=equipment, users=users)
 
-            frequency_mapping = {'daily': 1, 'weekly': 7, 'biweekly': 14, 'monthly': 30}
-
             if frequency == 'once':
                 if not once_date_string:
                     print('onceDate is missing. Please select a date.')
                     return render_template('new_maintenance.html', equipment=equipment, users=users)
                 once_date = datetime.strptime(once_date_string, '%Y-%m-%d').date()
                 task = MaintenanceTask(equipment_id=id, user_id=user_id, description=description, next_date=once_date, frequency=frequency)
-                db.session.add(task)            
-            elif frequency in frequency_mapping:
+                db.session.add(task)
+            elif frequency == 'daily':
                 today = date.today()
                 next_year_june_23 = date(today.year + 1, 6, 23)  # June 23rd of the next year
-                num_days_until_next_year_june_23 = (next_year_june_23 - today).days  # Calculate the number of days
+
+                # Calculate the number of days until June 23 of the next year
+                num_days_until_next_year_june_23 = (next_year_june_23 - today).days
 
                 tasks = []  # Initialize a list to hold the tasks
-                for i in range(num_days_until_next_year_june_23):  # Create tasks until June 23rd of the next year
-                    next_date = today + timedelta(days=frequency_mapping[frequency]*i)
+                for i in range(num_days_until_next_year_june_23 + 1):  # Create tasks until June 23rd of the next year (inclusive)
+                    next_date = today + timedelta(days=i)
+                    task = MaintenanceTask(equipment_id=id, user_id=user_id, description=description, next_date=next_date, frequency=frequency)
+                    tasks.append(task)  # Add the task to the list
+                db.session.add_all(tasks)
+            elif frequency == 'weekly':
+                today = date.today()
+                next_year_june_23 = date(today.year + 1, 6, 23)  # June 23rd of the next year
+
+                # Calculate the number of weeks until June 23 of the next year
+                num_weeks_until_next_year_june_23 = (next_year_june_23 - today).days // 7
+
+                tasks = []  # Initialize a list to hold the tasks
+                for i in range(num_weeks_until_next_year_june_23 + 1):  # Create tasks until June 23rd of the next year (inclusive)
+                    next_date = today + timedelta(weeks=i)
+                    task = MaintenanceTask(equipment_id=id, user_id=user_id, description=description, next_date=next_date, frequency=frequency)
+                    tasks.append(task)  # Add the task to the list
+                db.session.add_all(tasks)
+            elif frequency == 'biweekly':
+                today = date.today()
+                next_year_june_23 = date(today.year + 1, 6, 23)  # June 23rd of the next year
+
+                # Calculate the number of weeks until June 23 of the next year
+                num_weeks_until_next_year_june_23 = (next_year_june_23 - today).days // 14
+
+                tasks = []  # Initialize a list to hold the tasks
+                for i in range(num_weeks_until_next_year_june_23 + 1):  # Create tasks until June 23rd of the next year (inclusive)
+                    next_date = today + timedelta(weeks=i * 2)
+                    task = MaintenanceTask(equipment_id=id, user_id=user_id, description=description, next_date=next_date, frequency=frequency)
+                    tasks.append(task)  # Add the task to the list
+                db.session.add_all(tasks)
+            elif frequency == 'monthly':
+                today = date.today()
+                next_year_june_23 = date(today.year + 1, 6, 23)  # June 23rd of the next year
+
+                # Calculate the number of months until June 23 of the next year
+                num_months_until_next_year_june_23 = (next_year_june_23.year - today.year) * 12 + (next_year_june_23.month - today.month)
+
+                tasks = []  # Initialize a list to hold the tasks
+                for i in range(num_months_until_next_year_june_23 + 1):  # Create tasks until June 23rd of the next year (inclusive)
+                    next_date = today + relativedelta(months=i)
                     task = MaintenanceTask(equipment_id=id, user_id=user_id, description=description, next_date=next_date, frequency=frequency)
                     tasks.append(task)  # Add the task to the list
                 db.session.add_all(tasks)
             else:
                 print(f'Invalid frequency: {frequency}')
                 return render_template('new_maintenance.html', equipment=equipment, users=users)
-            
+
             db.session.commit()
-            
+
             return redirect(url_for('view_equipment', id=id))
 
         return render_template('new_maintenance.html', equipment=equipment, users=users)
-
 
 
 
@@ -396,6 +432,7 @@ def create_app():
             # Create a new history record
             history = MaintenanceHistory(
                 equipment_id=equipment_id,
+                user_id=current_user.id,  # Set the user_id field to the ID of the currently logged in user
                 description=task.description,
                 completed_date=datetime.now()
             )

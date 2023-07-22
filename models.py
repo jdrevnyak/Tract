@@ -98,9 +98,11 @@ class MaintenanceHistory(db.Model):
     __tablename__ = 'maintenance_history'
     id = Column(Integer, primary_key=True)
     equipment_id = Column(Integer, ForeignKey('equipment.id'), nullable=False)
+    user_id = Column(String(36), ForeignKey('user.id', name='fk_user_id'), nullable=True)
     description = Column(String(200), nullable=False)
     completed_date = Column(DateTime, nullable=False)
     equipment = relationship('Equipment', backref=backref('maintenance_history', lazy=True))
+    user = relationship('User', backref=backref('maintenance_history', lazy=True)) 
     frequency = Column(String(20))
     occurrence = Column(Integer)
     

@@ -4,82 +4,121 @@
     <title>View Equipment</title>
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <style>
-        .container {
-            display: flex;
-            flex-direction: row;
-        }
+    
 
-    </style>
-</head>
-<body>
-
-    {% extends 'basee.html' %}
-    {% block content %}
-    <div class="squeeze">
-        <div class="container">
-            <div class="equipment-info">
-                <div>
-                    <h1>{{ equipment.name }}</h1>
-                    {% if current_user.has_permission(CAN_EDIT_EQUIPMENT) %}
-                    <a href="{{ url_for('edit_equipment', id=equipment.id) }}"><i class="fas fa-edit"></i></a>
-                    {% endif %}
-                </div>
-                <div class="equipment-details">
-                    <p>ID: {{ equipment.id }} | Room #: {{ equipment.room }} | Up & Running: {{ equipment.is_active }}</p>
+    <body>
+        {% extends 'basee.html' %}
+        {% block content %}
+        <div class="squeeze">
+            <div class="home-breadcrumb">
+                <div class="equipment-header">
+                    <div class="equipment-info">
+                        <div class="equipment-title-edit">
+                            <h1>{{ equipment.name }}</h1>
+                            {% if current_user.has_permission(CAN_EDIT_EQUIPMENT) %}
+                                <a href="{{ url_for('edit_equipment', id=equipment.id) }}"><i class="fas fa-edit"></i></a>
+                            {% endif %}
+                        </div>
+                        <p>
+                            ID: {{ equipment.id }} | 
+                            Room #: {{ equipment.room }} | 
+                            Up & Running: 
+                            {% if equipment.is_active %}
+                              <i class="fas fa-check" style="color: green;"></i>
+                            {% else %}
+                              <i class="fas fa-times" style="color: red;"></i>
+                            {% endif %}
+                          </p>
+                    </div>
+                    <p class="barcode"><img src="{{ url_for('static', filename='barcodes/' + equipment.barcode + '.png') }}" alt="Barcode"></p>
                 </div>
             </div>
-            <div class="barcode">
-                <img src="{{ url_for('static', filename='barcodes/' + equipment.barcode + '.png') }}" alt="Barcode">
+    
+            <div class="upcoming-tasks home-table half-width-table">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-bs-toggle="tab" href="#maintenance-tasks">Maintenance Tasks</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="tab" href="#maintenance-history">Maintenance History</a>
+                    </li>
+                </ul>
+    
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="maintenance-tasks">
+                        <div class="maintenance-header">
+                            <h1 class="home-table h1"></h1>
+
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Description</th>
+                                    <th>Maintenance Date</th>
+                                    <th>Assigned to:</th>
+                                    <th>    {% if current_user.has_permission(CAN_ADD_MAINTENANCE) %}
+                                            <a class="btn btn-success new-task-button" href="{{ url_for('new_maintenance', id=equipment.id) }}">
+                                                New Task <i class="fas fa-plus"></i>
+                                            </a>
+                                    {% endif %}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for task in tasks %}
+                                <tr>
+                                    <td>{{ task.description }}</td>
+                                    <td>{{ task.next_date.strftime('%m/%d/%Y') }}</td>
+                                    <td>{{ task.user.username if task.user else 'All Users' }}</td>
+                                    <td>
+                                        <form action="{{ url_for('complete_maintenance', id=task.id, redirect_route='view_equipment') }}" method="post" style="display: inline-block;">
+                                            <input type="hidden" name="_method" value="post">
+                                            <button type="submit" style="background: none; border: none; padding: 0; margin-right: 10px; font-size: inherit; cursor: pointer;">
+                                                <i class="fas fa-check" style="color: #77bb41;"></i>
+                                            </button>
+                                        </form>
+                                        <form action="{{ url_for('delete_maintenance', id=task.id, redirect_route='view_equipment') }}" method="post" style="display: inline-block;">
+                                            <input type="hidden" name="_method" value="post">
+                                            <button type="submit" style="background: none; border: none; padding: 0; font-size: inherit; cursor: pointer;">
+                                                <i class="fa-solid fa-trash" style="color: #C70039;"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="tab-pane fade" id="maintenance-history">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Description</th>
+                                    <th>Completed on</th>
+                                    <th>Completed by:</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for history in maintenance_history %}
+                                <tr>
+                                    <td>{{ history.description }}</td>
+                                    <td>{{ history.completed_date.strftime('%m/%d/%Y') }}</td>
+                                    <td>{{ history.user.username if history.user else 'Not assigned' }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
-
-    <h2>Maintenance Tasks {% if current_user.has_permission(CAN_ADD_MAINTENANCE) %}<a class="new-task-button" href="{{ url_for('new_maintenance', id=equipment.id) }}"><i class="fas fa-plus" style="color: #77bb41;"></i></a></h2>{% endif %}
-    <div class="maintenance-tasks">
-        <table>
-            <thead>
-                <tr>
-                    <th>Description</th>
-                    <th>Maintenance Date</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for task in tasks %}
-                <tr>
-                    <td>{{ task.description }}</td>
-                    <td>{{ task.next_date.strftime('%m/%d/%Y') }}</td>
-                    <td>
-                        <a href="{{ url_for('edit_maintenance', id=task.id) }}"><i class="fas fa-edit"></i></a>
-                        <form action="{{ url_for('complete_maintenance', id=task.id, redirect_route='view_equipment') }}" method="post" style="display: inline-block;">
-                            <input type="hidden" name="_method" value="post">
-                            <button type="submit" style="background: none; border: none; padding: 0; margin-left: 5px; margin-right: 5px; font-size: inherit; cursor: pointer;">
-                                <i class="fas fa-check" style="color: #77bb41;"></i>
-                            </button>
-                        </form>
-                        <form action="{{ url_for('delete_maintenance', id=task.id, redirect_route='view_equipment') }}" method="post" style="display: inline-block;">
-                            <input type="hidden" name="_method" value="post">
-                            <button type="submit" style="background: none; border: none; padding: 0; font-size: inherit; cursor: pointer;">
-                                <i class="fas fa-trash" style="color: #C70039;"></i>
-                            </button>
-                        </form>
-                    </td>
-                </tr>
-                {% endfor %}
-        
-            </tbody>
-        </table>
-    </div>
-    <h2>Maintenance History</h2>
-    <ul>
-    {% for history in maintenance_history %}
-    <li>{{ history.completed_date.strftime('%m/%d/%Y') }}: {{ history.description }}</li>
-    {% endfor %}
-    </ul>
-
-
-    </div>
+        {% endblock %}
     
-    {% endblock %}
-</body>
-</html>
+        <script>
+            $(document).ready(function() {
+                // Show the tabbed view
+                $("#maintenanceTabs").show();
+            });
+        </script>
+    </body>
+    </html>

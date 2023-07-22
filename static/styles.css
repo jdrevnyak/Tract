@@ -10,9 +10,8 @@ html, body {
 }
 
 body {
-  margin-top: 0 !important; ;
-  background-color: #454A5F !important; /* set background color to #454A5F */
-
+  margin-top: 0 !important;
+  background-color: #454A5F !important;
 }
 
 .container {
@@ -22,30 +21,30 @@ body {
 }
 
 .card {
-  max-width: 40vw; /* increased width by 15px on each side */
-  padding: 32px;
+  padding: 2em;
+  max-width: 80%;
   background-color: #1E202C !important;
-  border-radius: 12px !important;
+  border-radius: 1em !important;
 }
 
 .logo img {
   max-width: 150px;
-  margin-bottom: 20px;
+  margin-bottom: 1em;
 }
 
 .card h1 {
-  font-size: 16px; /* reduced font size */
+  font-size: 1em;
   font-weight: 700;
-  line-height: 32px;
+  line-height: 2em;
   letter-spacing: 0em;
   text-align: center;
   color: white;
 }
 
 .form-label {
-  font-size: 15px;
+  font-size: 1em;
   font-weight: 500;
-  line-height: 20px;
+  line-height: 1.5em;
   letter-spacing: 0em;
   text-align: left;
   align-items: center;
@@ -53,26 +52,27 @@ body {
 }
 
 .form-check .form-check-input {
-  width: 14px !important;
-  height: 14px !important;
+  width: 1em !important;
+  height: 1em !important;
   margin-top: 0 !important;
 }
 
 .form-check .form-check-label {
-  line-height: 15px !important;  /* set this to match the height of your checkbox */
+  line-height: 1em !important;
 }
+
 .btn:focus, .btn:active, .btn:hover {
   background-color: #06A392 !important;
 }
 
 input::placeholder {
-  font-size: 13px;
+  font-size: 0.9em;
 }
 
-/* Sidebar *//* Sidebar */
+/* Sidebar */
 .sidebar .logo, .sidebar .drevtech {
-  display: flex; /* turns on flexbox */
-  justify-content: center; /* centers children horizontally */
+  display: flex;
+  justify-content: center;
   color: #FFFFFF;
 }
 
@@ -80,18 +80,17 @@ input::placeholder {
   display: flex;
   justify-content: center;
   margin-top: -15px;
-  margin-bottom: 30px; /* adjust this value as needed */
+  margin-bottom: 30px;
 }
 
-
 .sidebar {
-  position: fixed; 
+  position: fixed;
   height: 100%;
   width: 335px;
   padding: 22px 24px 670px 25px;
   background: #1E202C;
   box-shadow: 1px 0px 0px 0px #454A5F;
-  display: block; /* set sidebar to display by default */
+  display: block;
 }
 
 .sidebar a {
@@ -104,9 +103,9 @@ input::placeholder {
   line-height: 24px;
   text-align: left;
   color: #FFFFFF;
-  text-decoration: none; /* remove underline from links */
-  margin-bottom: 13px; /* adds space between links */
-  white-space: nowrap; /* prevent text from wrapping onto the next line */
+  text-decoration: none;
+  margin-bottom: 13px;
+  white-space: nowrap;
 }
 
 .sidebar a.active {
@@ -118,13 +117,11 @@ input::placeholder {
   color: #FFFFFF;
 }
 
-
 /* Home Page */
-
-/* adjust margin to prevent overlap with sidebar */
 .squeeze {
-  margin-left: 335px; /* this should match the width of your sidebar */
+  margin-left: 335px;
   padding: 25px;
+  max-width: 100%;
 }
 
 .home-breadcrumb {
@@ -140,10 +137,8 @@ input::placeholder {
   border-radius: 6px;
 }
 
-
-
 .home-breadcrumb h1 {
-  font-size: 1.5em; /* adjust this value to your preference */
+  font-size: 1.5em;
   margin: 0;
 }
 
@@ -159,7 +154,7 @@ input::placeholder {
 .home-card {
   display: flex;
   justify-content: space-between;
-  width: 100%; /* full width of parent container */
+  width: 100%;
   gap: 24px;
   margin-top: 20px;
 }
@@ -182,12 +177,11 @@ input::placeholder {
 
 .home-card .box:hover {
   background: #2f3245;
-
 }
 
 .no-style-link {
   text-decoration: none;
-  display: block; /* or inline-block */
+  display: block;
 }
 
 .box p, .box h2 {
@@ -205,24 +199,22 @@ input::placeholder {
 
 .noneed{
   color: white;
-  
 }
-
 
 .home-table {
   background: #1E202C;
-  width: 100%; /* fill the width of the parent container */
+  width: 100%;
   margin-top: 25px;
 }
 
 .home-table table {
-  width: 100%; /* fill the width of the parent container */
-  border-collapse: collapse; /* remove default spacing between table cells */
+  width: 100%;
+  border-collapse: collapse;
 }
 
 .home-table th, .home-table td {
-  padding: 4px 0; /* top and bottom padding, no left and right padding */
-  padding-left: 15px; /* add padding to the left */
+  padding: 4px 0;
+  padding-left: 15px;
   padding-right: 10px;
   text-align: left;
   font-family: Helvetica Neue;
@@ -235,12 +227,11 @@ input::placeholder {
 .home-table thead th {
   height: 60px;
   padding: 4px 0px 4px 0px;
-  padding-left: 15px; /* add padding to the left */
+  padding-left: 15px;
   text-align: left;
   color: white;
   background: #454A5F;
 }
-
 
 .home-table thead th:first-child {
   border-top-left-radius: 6px;
@@ -283,30 +274,28 @@ input::placeholder {
   padding: 15px;
 }
 
-/* Styles for the table container */
 .upcoming-tasks.home-table {
   border-radius: 6px;
 }
 
-
-/* Styles for the table container */
 .table-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
   padding: 16px;
   border-radius: 6px;
   background: #1E202C;
 }
 
-/* Styles for the table header */
 table thead {
   background: #454A5F;
   border-radius: 6px;
   padding: 4px 0px 4px 0px;
   justify-content: space-between;
-  width: 100%; /* adjust as necessary, this will make the header fill the width of its container */
-  height: 60px; /* adjust as necessary, this will set the height of the header */
+  width: 100%;
+  height: 60px;
 }
 
-/* Styles for the table header text */
 table thead th {
   font-family: 'Helvetica Neue', sans-serif;
   font-size: 16px;
@@ -316,19 +305,15 @@ table thead th {
   color: white;
 }
 
-/* Add a gap between table rows */
 table tr + tr {
   margin-top: 1px;
 }
-
 
 .dropdown {
   position: relative;
   display: inline-block;
   background-color: #313545;
   overflow: visible !important;
-
-
 }
 
 .dropdown-toggle {
@@ -347,8 +332,7 @@ table tr + tr {
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
   color: white;
-  transition: display 0.5s ease-in-out; /* Add a transition effect (optional) */
-
+  transition: display 0.5s ease-in-out;
 }
 
 .dropdown-menu a {
@@ -359,12 +343,10 @@ table tr + tr {
   background-color: #313545;
 }
 
-
 .dropdown-menu a:hover {
   background-color: #2f3245;
   color: #FFFFFF;
 }
-
 
 .form-container.card {
   background: #1E202C;
@@ -392,7 +374,6 @@ table tr + tr {
   background-color: #6c757d !important;
 }
 
-
 .form-card {
   background: #1E202C;
   padding: 16px;
@@ -400,29 +381,189 @@ table tr + tr {
   margin-top: 15px;
 }
 
+.home-table h1{
+  color: #FFFFFF;
+  font-family: Helvetica Neue;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 0em;
+  text-align: left;
+  padding-top: 15px;
+  padding-bottom: 10px;
+}
+
+.equipment-header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.equipment-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.equipment-header h1{
+  font-size: 26px;
+}
+
+.equipment-info p{
+  margin-top: 5px;
+}
+
+.equipment-title-edit {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.barcode {
+  margin-left: auto;
+}
+
+.barcode img {
+  width: 150px;
+  height: auto;
+}
+
+.tables-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.half-width-table {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  max-width: 100%;
+}
+
+.table-container table,
+.table-container th,
+.table-container td {
+  table-layout: auto;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.table-container td {
+  overflow-wrap: break-word;
+}
+
+.tab-content {
+  padding-top: 15px;
+}
+
+.nav-tabs {
+  border-bottom: none;
+}
+
+.nav-tabs .nav-link {
+  background-color: #1E202C;
+  border: none;
+  border-radius: 0;
+  color: white;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.nav-tabs .nav-link:hover {
+  background-color: #2f3245;
+  color: white;
+}
+
+.nav-tabs .nav-link.active {
+  background-color: #454A5F;
+  color: white;
+}
+
+.tab-pane {
+  background-color: #1E202C;
+  border-radius: 6px;
+  padding: 15px;
+  margin-top: 20px;
+}
+
+.tab-content .table-container table {
+  border: none;
+}
+
+.tab-content .table-container th,
+.tab-content .table-container td {
+  padding: 8px 0;
+  padding-left: 15px;
+  padding-right: 10px;
+  font-size: 16px;
+  font-weight: 500;
+  color: white;
+}
+
+.tab-content .table-container thead th {
+  background-color: #454A5F;
+  border-radius: 6px;
+}
 
 
+/* Add this style for the container of h1 and button */
+#maintenance-tasks .maintenance-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0; /* Remove any margin */
+}
 
+/* Add this style for the h1 element */
+#maintenance-tasks h1 {
+  margin: 0;
+  padding-top: 10px; /* Adjust top padding as needed */
+}
 
+/* Add this style for the button */
+#maintenance-tasks .new-task-button {
+  margin: 0;
+  white-space: nowrap; /* Prevent the button from wrapping */
+}
 
+.tab-content .table-container thead th:first-child {
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+}
 
+.tab-content .table-container thead th:last-child {
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+}
 
-/* Hide .large-screen on small screens and adjust a tags */
+.tab-content .mt-2 {
+  margin-top: 0 !important;
+}
+
+.tab-content .tab-pane.fade.show.active {
+  padding-top: 0 !important;
+}
+
+.new-task-button {
+  margin-top: -10px;
+  margin-bottom: 10px;
+}
+
 @media (max-width: 992px) {
   .nav-text {
-    display: none; /* hide nav text */
+    display: none;
   }
-
   .large-screen {
-    display: none; /* hide large screen elements */
+    display: none;
   }
   .sidebar a {
-    display: flex; /* Make a elements into flex containers */
-    align-items: center; /* Center items vertically */
-    justify-content: center; /* Center items horizontally */
-    padding: 30px; /* NEW: Remove padding */
-    height: 100%; /* make a tags fill the height of the sidebar */
-    margin: 0; /* NEW: Remove margin */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2em;
+    height: 100%;
+    margin: 0;
   }
   
   .sidebar {
@@ -430,61 +571,47 @@ table tr + tr {
     flex-direction: row;
     justify-content: space-evenly;
     align-items: center;
-    height: 80px; /* adjust as needed */
+    height: 5em;
     width: 100%;
-    bottom: 0; /* position at bottom */
+    bottom: 0;
     padding: 0;
   }
-
-
-    /*  on small Screens */
-
-    
-    .squeeze {
-      margin-left: 0; /* no need for margin on the left side on small screens */
-      padding: 10px;
-      padding-bottom: 92px; /* Add padding to the bottom equal to the height of the sidebar */
-    }
-  
-
-  
-    .home-breadcrumb h1 {
-      font-size: 1.2em; /* adjust this value to your preference */
-    }
-  
-  
-    .home-table {
-      margin-top: 10px;
-    }
-  
-    .home-table th, .home-table td {
-      padding: 2px 0; /* top and bottom padding, no left and right padding */
-      padding-left: 5px; /* add padding to the left */
-      padding-right: 5px;
-    }
-    
-    .home-table tbody td {
-      padding: 5px;
-    }
-  
-    .table-container {
-      padding: 8px;
-    }
-
-    .dropdown-menu {
-      right: 0 !important;
-      left: auto !important;
-    }
+  .squeeze {
+    margin-left: 0;
+    padding: 1em;
+    padding-bottom: 6em;
   }
-
   
-
+  .home-breadcrumb h1 {
+    font-size: 1.2em;
+  }
   
+  .home-table {
+    margin-top: 1em;
+  }
+  
+  .home-table th, .home-table td {
+    padding: 0.2em 0;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+  
+  .home-table tbody td {
+    padding: 0.5em;
+  }
+  
+  .table-container {
+    padding: 0.8em;
+  }
+  .dropdown-menu {
+    right: 0 !important;
+    left: auto !important;
+  }
+}
 
-/* Show .large-screen on larger screens */
 @media (min-width: 992px) {
   .large-screen {
-    display: block; /* show large screen elements */
+    display: block;
   }
 }
 

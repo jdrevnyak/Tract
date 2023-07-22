@@ -11,6 +11,7 @@
         }
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    
     <style>
         /* Add this style for the arrows */
         .sortable::after {
@@ -73,8 +74,10 @@
       </tbody>
   </table>
   {% else %}
-  <p>No maintenance needed</p>
-  {% endif %}
+            <div class="home-breadcrumb">
+            <p>No maintenance needed</p>
+            </div>
+            {% endif %}
 </div>      
 </div>
 
