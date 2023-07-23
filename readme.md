@@ -87,7 +87,7 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 - [x] Fix CSS for pages.
 - [x] Have tasks tables  display assigned user & Maintanence history should say who completed the task.
 - [x] Allow user to scan equipment barcode in app
-- [ ] Push notifications
+- [ ] Fix CSS for Mobile Web App
 - [ ] If machine is down highlight in light red
 - [x] Filter tables (Some what need to fine tune)
 - [x] Web App Manifest
