@@ -73,6 +73,8 @@ def create_app():
     def load_user(user_id):
         return User.query.get(user_id)  
     
+
+        
     
     @app.route('/create_roles', methods=['GET', 'POST'])
     def create_roles():
